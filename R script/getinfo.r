@@ -10,9 +10,8 @@ library(stringr)
 # Verbose regular expressions
 library(rebus)     
 
-# Eases DateTime manipulation
-library(lubridate)
-
+#URL parser
+library(urltools)
 
 url<-"https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=N&page=5#page"
 
@@ -28,4 +27,17 @@ nomi<- page%>%
   rvest::html_nodes("#selectedcontent li")%>%
   rvest::html_text()
 
-df<-data_frame(nome= nomi, url= urls)
+
+pattern<-
+
+
+ids<-gsub("(?<=[id])(\d+)(?=[?mt=8])", "", urls)
+
+str_sub(urls, -50, -60)
+
+df<-data_frame(Name= nomi, URL= urls, ID=ids)
+
+
+
+write.csv(df, "appinfo.csv")
+
