@@ -1,22 +1,37 @@
 # 1: Caricamento librerie ####
 # General-purpose data wrangling
-library(tidyverse)  
+library(tidyverse)
 
-# Parsing of HTML/XML files  
-library(rvest)    
+# Parsing of HTML/XML files
+library(rvest)
 
 # String manipulation
-library(stringr)   
+library(stringr)
 
 # Verbose regular expressions
-library(rebus)     
+library(rebus)
 
 #URL parser
 library(urltools)
 
-#2: Lettura URL ####
+d = NULL 
 
-url<-"https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=A&page=1#page"
+
+
+source("maxpagenumber.r")
+maxpagenumber
+
+#2: Lettura URL ####
+letters<-c(LETTERS,"*")
+lenletters<-length(letters)
+
+for(i in 1:lenletters) {
+
+letter<-letters[i]
+
+for(j in 1:maxpagenumber[i]){
+  url<-paste("https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=",letter,"&page=", j,"#page",sep="")
+
 
 page<-read_html(url)
 
@@ -38,7 +53,11 @@ id<-gsub("\\?mt=8", "", IDs2)
 
 
 #6: Costruzione del dataset ####
-df<-data_frame(Name= nomi, URL= urls, ID=id)
+
+
+d = rbind(d, data.frame(Name= nomi, URL= urls, ID=id)) 
+}
+}
 
 #7: Salvataggio del dataset in formato csv ####
-write.csv(df, "appinfo.csv")
+write.csv2(d, "appinfo2.csv")
