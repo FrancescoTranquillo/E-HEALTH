@@ -53,6 +53,8 @@ lista1<- page%>%
 #il comando serve a verificare che questa stringa sia effettivamente
 #presente nel vettore lista1
 
+#il pezzo successivo fixa il problema delle lettere con 1 o 2
+#pagine, nelle quali è subito assente la stringa "Next"
 if(grepl("Next",lista1)==FALSE){
   maxpage<-gsub("[A-z]","",lista1,perl=TRUE)
   nchar<-as.numeric(nchar(maxpage))
