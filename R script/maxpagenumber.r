@@ -37,7 +37,7 @@ letter<-letters[i]
 
 
 #viene incollato l'url che considera come lettera quella impostata a riga 22
-url<-paste("https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=",letter,"&page=1#page",sep="")
+url<-paste("https://itunes.apple.com/us/genre/ios-health-fitness/id6013?mt=8&letter=",letter,"&page=1#page",sep="")
 
 #si utilizza il pacchetto "rvest" per far leggere l'html a R
 page<-read_html(url)
@@ -143,7 +143,7 @@ if(last(nmaxpage)==nmaxpage[length(nmaxpage)-1 ]){
   #a questo punto ricostruisco l'url con nmaxpage, visto che era presente Next"
 
   #tratto l'url come un puzzle, separandolo in 2 parti:
-  urlpart1<-paste("https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=",letter,"&page=",sep="")
+  urlpart1<-paste("https://itunes.apple.com/us/genre/ios-health-fitness/id6013?mt=8&letter=",letter,"&page=",sep="")
 
   urlpart2<-"#page"
 

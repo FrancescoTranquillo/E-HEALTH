@@ -36,7 +36,7 @@ letter<-letters[i]
 #secondo for: questo cicla da 1 al massimo numero
 #di pagine proprio di ogni lettera
 for(j in 1:maxpagenumber[i]){
-  url<-paste("https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=",letter,"&page=", j,"#page",sep="")
+  url<-paste("https://itunes.apple.com/us/genre/ios-health-fitness/id6013?mt=8&letter=",letter,"&page=", j,"#page",sep="")
 
 
 page<-read_html(url)
