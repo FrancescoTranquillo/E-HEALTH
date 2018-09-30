@@ -45,7 +45,7 @@ page<-read_html(url)
 #In queste righe viene detto a R di creare un vettore chiamato lista1 che contiene
 #(in formato testo, quindi carattere) la lista dei numeri che si
 #visualizzano nella prima pagina di una lettera
-lista1<- page%>%
+lista1<- page %>%
   rvest::html_nodes(".alpha+ .paginate")%>%
   html_text()
 
@@ -119,7 +119,7 @@ while(grepl("Next",lista1))
     maxpage<-substr(maxpage,nchar,nchar)
   }
 
-  #ora quindi aggiorno il vettore inizializzato alla riga 25 con il numero maxpage trovato
+  #ora quindi aggiorno il vettore inizializzato alla riga 27 con il numero maxpage trovato
   #nell'if precedente, AGGIUNGENDOLO in coda al vettore
   nmaxpage<-c(nmaxpage,as.numeric(maxpage))
   nmaxpage
