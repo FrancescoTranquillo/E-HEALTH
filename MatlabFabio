@@ -1,0 +1,22 @@
+%%premetto funziona solo per una lettera per ora bisogna fare un for per ciclarle tutte
+%%inoltre ho messo numpage fissato a 18 quindi quello verrà modificato con il controllo che ha fatto fra sul famoso NEXT
+
+
+numpage = [1:18]  
+numpagemax = size(numpage(2))
+
+for j=1:numpagemax(2)
+    
+   html=webread(strcat(strcat('https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter=D&page=',numpage(1,j),'#page')))
+        
+   regexp(html,'?mt=8">(.+?)</a> </li>','tokens')
+        colonnanomi=ans'
+        
+                 regexp(html, ' <li><a href="(.+?)">','tokens')
+                 colonnalink=ans'
+    
+                          regexp(html, '/id(.+?)?mt=8">','tokens')
+                          colonnaid=ans'
+end
+
+Tabella=[colonnanomi,colonnalink,colonnaid]
