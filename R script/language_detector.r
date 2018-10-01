@@ -8,15 +8,7 @@ library(progress)
 
 df<-read.csv2("app_M_H&F.csv", stringsAsFactors=FALSE)
 anyDuplicated(df)
-df_subset<-select(df[90:110,], URL)
-
-df_subset$URL
-
-
-len<-length(df_subset$URL)
-len
-
-
+df_subset<-select(df, URL)
 
 df_subset_lang <- df_subset %>%
   rowwise() %>%
@@ -29,10 +21,6 @@ df_subset_lang <- df_subset %>%
                           NA)(URL))
 
 
-
-df_all_languages<-df%>%
-  mutate(language=language)
-
 df_english_only<-df[which(language=="english"),]
 
-last(language)
+
