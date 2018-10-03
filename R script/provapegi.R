@@ -7,3 +7,9 @@ page<-read_html(url)
 pegiiii<-page%>%
   html_nodes(".badge--product-title")%>%
   html_text(trim = TRUE)    
+
+df<-read.csv2("app_M_H&F_ENGLISH_ONLY.csv" )
+head(df)
+
+
+str(df)
