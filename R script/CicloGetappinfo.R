@@ -13,9 +13,8 @@ dc<- df[,2]
 len<-length(dc)
 cate<-NULL
  for (i in 1:len){
-url<- paste(dc[i])
+url<- dc[i]
 page<-read_html(url)
-
 category<-page%>%
   html_node(".large-6 .link")%>%                         
   html_text(trim=TRUE)
