@@ -7,6 +7,7 @@ library(gdata)           ##con queste colonne di getappinfo Error: Columns `aver
 library(anytime)         ##must be length 1 or 4, not 0, 0, 0
 library(dplyr)
 library(lubridate)
+
 avgrating=NULL          ######inizializzo per forza tutto se no il codice mi infama
 ratings=NULL
 pegi=NULL
@@ -23,7 +24,7 @@ dc<- df[,2]                                                              ##prend
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
                                                                          ##coraggio a mandarlo ed aspettare 6 ore che finisca
 
-for (i in 1:40){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
+for (i in 1:10){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
@@ -44,7 +45,11 @@ for (i in 1:40){                           ###### METTO SOLO 4 PERCH? SE METTESS
     html_text(trim = TRUE)%>%
     gsub(" Ratings", "", .)                                  
   
-  ratings1<-as.numeric(sub("K", "e3", ratings))                
+  ratings1<-as.numeric(sub("K", "e3", ratings))
+  if(length(ratings1)=="0"){
+    ratings1<-NA
+  }
+  
   ratings<-c(ratings,ratings1)                                ##qui mi infama mi sa il codice dopo da problemi nella costruzione della tabella
   
   #PEGI (DOUBLE)####
@@ -115,5 +120,5 @@ category<-c(category,category1)
   
   
 }
-data <- tibble(average.rating=avgrating,category=category, pegi=pegi, description=description, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
+data <- tibble(ratings=ratings, average.rating=avgrating,category=category, pegi=pegi, description=description, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
 write.csv2(data, "appcategory3.csv")
