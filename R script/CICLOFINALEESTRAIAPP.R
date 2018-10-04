@@ -15,15 +15,15 @@ description=NULL
 lastupdate<-NULL
 version<-NULL
 devname<-NULL
-price2<-NULL              ######price2 non chiedermi perchè 2, mi piaceva di più
+price2<-NULL              ######price2 non chiedermi perch? 2, mi piaceva di pi?
 
 
 df<-read.csv2("app_M_H&F_ENGLISH_ONLY.csv", stringsAsFactors = FALSE)
 dc<- df[,2]                                                              ##prendo seconda colonna dove ci sono gli url
-len<-length(dc)                                                          ##prendo lunghezza in len sarà la fine del ciclo quando ci decidiamo con
+len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
                                                                          ##coraggio a mandarlo ed aspettare 6 ore che finisca
 
-for (i in 1:4){                           ###### METTO SOLO 4 PERCHé SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCIòVOGLIA
+for (i in 1:40){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
@@ -32,7 +32,11 @@ for (i in 1:4){                           ###### METTO SOLO 4 PERCHé SE METTESSI
     html_nodes(".we-customer-ratings__averages__display")%>%   
     html_text(trim = TRUE)%>%                                  
     as.numeric(.)                                              
-  avgrating<-c(avgrating,avgrating1)                           ######allora qui per non sovrascrivere come avevamo fatto in matlab lo richiamo così
+  if(length(avgrating1)=="0"){
+    avgrating1<-NA
+  }
+  
+  avgrating<-c(avgrating,avgrating1)                           ######allora qui per non sovrascrivere come avevamo fatto in matlab lo richiamo cos?
   
   #punteggio totale (DOUBLE)####
   ratings1<-page%>%
@@ -82,7 +86,7 @@ category<-c(category,category1)
   #Ultima versione app (STRINGA) ####
   
   version1<-page%>%
-    html_node(".version-history__item__version-number")%>%         ##non è un numero è una stringa, va beneeeeeee??? non 
+    html_node(".version-history__item__version-number")%>%         ##non ? un numero ? una stringa, va beneeeeeee??? non 
     html_text()
   version<-c(version,version1)
   
@@ -111,5 +115,5 @@ category<-c(category,category1)
   
   
 }
-data <- tibble(category=category, pegi=pegi, description=description, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
+data <- tibble(average.rating=avgrating,category=category, pegi=pegi, description=description, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
 write.csv2(data, "appcategory3.csv")

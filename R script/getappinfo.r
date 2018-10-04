@@ -8,7 +8,7 @@ library(anytime)
 library(dplyr)
 library(lubridate)
 
-url<-'https://itunes.apple.com/us/app/sprout-period-fertility-ovulation-tracker/id1003306557?mt=8'
+url<-'https://itunes.apple.com/us/app/geneva-score/id1142911763?mt=8'
 
 page<-read_html(url)
 
@@ -16,8 +16,11 @@ page<-read_html(url)
 avgrating<-page%>%
   html_nodes(".we-customer-ratings__averages__display")%>%   ##Prende la classe
   html_text(trim = TRUE)%>%                                  ##sulla cosa che hai preso fammi diventare testo, trim=pulisci html
-  as.numeric(.)                                              ##diventa numerico il . serve per prendere la riga prima
-
+  as.numeric(.)                                         ##diventa numerico il . serve per prendere la riga prima
+if(length(avgrating)=="0"){
+  avgrating<-NA
+}
+  
 #punteggio totale (DOUBLE)####
 ratings<-page%>%
   html_node(".we-customer-ratings__count")%>%
@@ -31,7 +34,7 @@ ratings<-as.numeric(sub("K", "e3", ratings))                ##Sostituisci a K(ch
 pegipattern<-"\\d+"
 
 pegi<-page%>%
-  html_node(".l-row:nth-child(6) .large-6")%>%            ##prendi classe dove trovi età
+  html_node(".l-row:nth-child(6) .large-6")%>%            ##prendi classe dove trovi et?
   html_text(trim=TRUE)%>%                                 ##pulisco
   str_extract(., pattern = pegipattern)%>%                ##estrae in . (page)       corrisponde il pattern che ho selezionato sopra, prende cifre
   as.numeric()
@@ -64,7 +67,7 @@ parse_date_time(., orders = "b d Y", locale="us")        ##b=mese d=giorno Y=ann
 #Ultima versione app (STRINGA) ####
 
 version<-page%>%
-  html_node(".version-history__item__version-number")%>%         ##non è un numero è una stringa, va beneeeeeee???
+  html_node(".version-history__item__version-number")%>%         ##non ? un numero ? una stringa, va beneeeeeee???
   html_text()
 
 #Developer (STRINGA)####
@@ -92,7 +95,7 @@ if(price=="Free"){
 
 #creazione dataset
 combined_data <- tibble(average.rating=avgrating, ratings=ratings, category=category,                         ##tibble crea la tabella (nome colonna=vettore etc)
-                        pegi=pegi, description=description, devname=devname, price=price, currency=currency,  ##se il vettore non è un valore ma è un vettore 
+                        pegi=pegi, description=description, devname=devname, price=price, currency=currency,  ##se il vettore non ? un valore ma ? un vettore 
                         version=version, lastupdate=lastupdatedate) 
 
 combined_data
