@@ -2,27 +2,39 @@ library(tidyverse)
 library(rvest)
 library(stringr)
 library(rebus)
-library(urltools)        ##XXX PROBLEMA ENORME
-library(gdata)           ##con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` 
-library(anytime)         ##must be length 1 or 4, not 0, 0, 0
+library(urltools)       
+library(gdata)            
+library(anytime)      
 library(dplyr)
 library(lubridate)
 
-avgrating=NULL          ######inizializzo per forza tutto se no il codice mi infama
-ratings=NULL
-pegi=NULL
-category=NULL
-description=NULL
-lastupdate<-NULL
-version<-NULL
-devname<-NULL
-price2<-NULL              ######price2 non chiedermi perch? 2, mi piaceva di pi?
-appid<-NULL
-appname<-NULL
-appurl<-NULL
-lang<-NULL
-urldev<-NULL
-size<-NULL
+avgrating=NULL       ##1 
+ratings=NULL         #2
+pegi=NULL            #3
+category=NULL        #4
+description=NULL     #5
+lastupdate<-NULL     #6
+version<-NULL        #7
+devname<-NULL        #8
+price2<-NULL         #9
+appid<-NULL          #10
+appname<-NULL        #11
+appurl<-NULL         #12
+lang<-NULL           #13
+urldev<-NULL         #14
+size<-NULL           #15
+keywords<-NULL                    #16keywords
+                     #17DEV ID
+                     #18RELEASEDATE
+                     #19Averageuser rat current + ALL????
+                     #20NUm of user rating current+ALL????
+                     #21 Num user rating
+                     #22 % 5star
+                     #23 % 4star
+                     #24 % 3star (integer)
+                     #25 % 2star
+                     #26 % 1star
+                     #27 Date RETRIEVED
 
 
 
@@ -37,6 +49,13 @@ for (i in 228:230){                           ###### METTO SOLO 4 PERCH? SE METT
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
+  
+  ##KEYWORDS(HO BESTEMMIATO MALE)
+  keywords1<-page%>%
+    html_nodes('meta')%>%
+    html_attr('content')
+  keywords1<-keywords1[8]
+  keywords<-c(keywords,keywords1)
   
 ##LINGUAGGIO ####
 lang1<-page%>%
@@ -187,5 +206,5 @@ lang<-c(lang,lang1)
   
   
 }
-data <- tibble(languages=lang, Size=size, AppID=appid, Name=appname, AppURL=appurl, description=description, average.rating=avgrating, category=category, pegi=pegi, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
+data <- tibble(keywords=keywords, languages=lang, Size=size, AppID=appid, Name=appname, AppURL=appurl, description=description, average.rating=avgrating, category=category, pegi=pegi, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
 write.csv2(data, "appcategoryratingsPROVAFINALE.csv")
