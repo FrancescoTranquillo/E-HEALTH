@@ -23,18 +23,18 @@ appurl<-NULL         #12
 lang<-NULL           #13
 urldev<-NULL         #14
 size<-NULL           #15
-keywords<-NULL                    #16keywords
-                     #17DEV ID
-                     #18RELEASEDATE
-                     #19Averageuser rat current + ALL????
-                     #20NUm of user rating current+ALL????
-                     #21 Num user rating
-                     #22 % 5star
-                     #23 % 4star
-                     #24 % 3star (integer)
-                     #25 % 2star
-                     #26 % 1star
-                     #27 Date RETRIEVED
+keywords<-NULL       #16
+iddev<-NULL          #17
+                     #18RELEASEDATE ---->già fatto?
+                     #19-20 Averageuser rat current + ALL???? in teoria sono due indici
+                     #20-21 NUm of user rating current+ALL????
+                     #21 Num user rating  --->già fatto?
+fivestar<-NULL       #22 % 5star
+fourstar<-NULL       #23 % 4star
+threestar<-NULL      #24 % 3star (integer)
+twostar<-NULL        #25 % 2star
+onestar<-NULL        #26 % 1star
+                     #27 Date RETRIEVED  ----->già fatto?
 
 
 
@@ -45,12 +45,12 @@ d3<-df[,1]
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 ##coraggio a mandarlo ed aspettare 6 ore che finisca
 
-for (i in 228:230){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
+for (i in 288:310){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
   
-  ##KEYWORDS(HO BESTEMMIATO MALE)
+##KEYWORDS(HO BESTEMMIATO MALE)
   keywords1<-page%>%
     html_nodes('meta')%>%
     html_attr('content')
@@ -92,6 +92,68 @@ lang<-c(lang,lang1)
  # size1<-as.numeric(num)
   
   
+  ##5 Stelle
+  fivestar1<-page%>%
+    html_node(".we-star-bar-graph__stars--5+ .we-star-bar-graph__bar .we-star-bar-graph__bar__foreground-bar")%>%
+    html_attr("style")%>%
+    gsub("width: ", "", .)%>%
+    gsub(";", "", .)
+  if(length(fivestar1)=="0"){
+    fivestar1<-NA
+  }
+  fivestar<-c(fivestar,fivestar1)
+  
+  
+  ##4 Stelle
+  fourstar1<-page%>%
+    html_node(".we-star-bar-graph__stars--4+ .we-star-bar-graph__bar .we-star-bar-graph__bar__foreground-bar")%>%
+    html_attr("style")%>%
+    gsub("width: ", "", .)%>%
+    gsub(";", "", .)
+  if(length(fourstar1)=="0"){
+    fourstar1<-NA
+  }
+  fourstar<-c(fourstar,fourstar1)
+  
+  
+  ## 3 stelle
+  
+  threestar1<-page%>%
+    html_node(".we-star-bar-graph__stars--3+ .we-star-bar-graph__bar .we-star-bar-graph__bar__foreground-bar")%>%
+    html_attr("style")%>%
+    gsub("width: ", "", .)%>%
+    gsub(";", "", .)
+  if(length(threestar1)=="0"){
+    threestar1<-NA
+  }
+  threestar<-c(threestar,threestar1)
+  
+  
+  ## 2 stelle
+  
+  twostar1<-page%>%
+    html_node(".we-star-bar-graph__stars--2+ .we-star-bar-graph__bar .we-star-bar-graph__bar__foreground-bar")%>%
+    html_attr("style")%>%
+    gsub("width: ", "", .)%>%
+    gsub(";", "", .)
+  if(length(twostar1)=="0"){
+    twostar1<-NA
+  }
+  twostar<-c(twostar,twostar1)
+  
+  
+  ## 1 stella
+  
+  onestar1<-page%>%
+    html_node(".we-star-bar-graph__row:nth-child(5) .we-star-bar-graph__bar__foreground-bar")%>%
+    html_attr("style")%>%
+    gsub("width: ", "", .)%>%
+    gsub(";", "", .)
+  if(length(onestar1)=="0"){
+    onestar1<-NA
+  }
+  onestar<-c(onestar,onestar1)
+  
   
   
   
@@ -102,6 +164,12 @@ lang<-c(lang,lang1)
     html_attr("href")
   urldev<-c(urldev,urldev1)
   
+  
+  ##IDDEV
+  IDs1<-gsub("(?<=)(.*)(id)", "", urldev1, perl = TRUE)
+  IDs2<-gsub("(?<=[id])(\\d+)", "", IDs1, perl = TRUE)
+  iddev1<-gsub("\\?mt=8", "", IDs2)
+  iddev<-c(iddev,iddev1)
   
   
   ##appid da tabella easy ####
@@ -206,5 +274,5 @@ lang<-c(lang,lang1)
   
   
 }
-data <- tibble(keywords=keywords, languages=lang, Size=size, AppID=appid, Name=appname, AppURL=appurl, description=description, average.rating=avgrating, category=category, pegi=pegi, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
-write.csv2(data, "appcategoryratingsPROVAFINALE.csv")
+data <- tibble(FiveStars=fivestar, FourStars=fourstar, ThreeStars=threestar, TwoStars=twostar, OneStar=onestar, Urldev=urldev,IDdev=iddev, keywords=keywords, languages=lang, Size=size, AppID=appid, Name=appname, AppURL=appurl, description=description, average.rating=avgrating, category=category, pegi=pegi, devname=devname, price=price2, version=version, lastupdate=lastupdate)  ## problemi con queste colonne di getappinfo Error: Columns `average.rating`, `ratings`, `currency` must be length 1 or 4, not 0, 0, 0
+write.csv2(data, "appcategoryratingsFINALESTELLINE.csv")
