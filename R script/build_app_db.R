@@ -20,8 +20,10 @@ description=NULL     #5
 lastupdate<-NULL     #6
 version<-NULL        #7
 devname<-NULL        #8
-price2<-NULL         #9
+price<-NULL         #9
+currency<-NULL
 appid<-NULL          #10
+
 appname<-NULL        #11
 appurl<-NULL         #12
 lang<-NULL           #13
@@ -48,7 +50,7 @@ d3<-df[,1]
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 
 #4 Estrazione dei 27 attributi ####
-for (i in 288:310){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
+for (i in 200:250){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
@@ -216,22 +218,27 @@ for (i in 288:310){                           ###### METTO SOLO 4 PERCH? SE METT
     html_node(".information-list__item:nth-child(1) .large-6")%>%       
     html_text(trim=TRUE)
   devname<-c(devname,devname1)
-  #Prezzo (DOUBLE) e valuta (STRINGA)
+  
+  #Prezzo (DOUBLE) e valuta (STRINGA) ####
   
   currencypattern<-"^\\W"                                                
-  price<-page%>%        
+  price1<-page%>%        
     html_node(".inline-list__item--bulleted:nth-child(1)")%>%
     html_text(trim=TRUE)
-  
-  if(price=="Free"){
-    price<-0
-    currency<-0                        ##currency=valuta
-  } else {
-    currency<-str_extract(price, currencypattern)
-    price<-gsub(currencypattern, "", price)     
-    price<-as.numeric(price)
+  if(length(price1)=="0"){
+    price1<-NA
   }
-  price2<-c(price2,price)
+  
+  if(price1=="Free"){
+    price1<-0
+    currency1<-0                        ##currency=valuta
+  } else {
+    currency1<-str_extract(price1, currencypattern)
+    price1<-gsub(currencypattern, "", price1)     
+    price1<-as.numeric(price1)
+  }
+  price<-c(price,price1)
+  currency<-c(currency,currency1)
   
   
 }
@@ -239,7 +246,7 @@ for (i in 288:310){                           ###### METTO SOLO 4 PERCH? SE METT
 data <- tibble("App ID"=appid, "App Name"=appname, "App URL"=appurl,
                "App description"=description, "Keywords"=keywords, "Version"=version,
                "Age rating"=pegi,"Language(s)"=lang, "Developer ID"=iddev, 
-               "Developer Name"=devname, "Category"=category, "Price"=price,
+               "Developer Name"=devname, "Category"=category, "Price"=price, "Currency"=currency,
                "Size"=size, "Last update date"=anydate(lastupdate),
                "Release Date"=anydate(releasedate), "Average user ratings-current"=avgrating,
                "Number of user ratings-current"=ratings, "% of user ratings with 5 stars"=fivestar,
