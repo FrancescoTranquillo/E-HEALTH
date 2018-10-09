@@ -71,30 +71,23 @@ for (i in 200:250){                           ###### METTO SOLO 4 PERCH? SE METT
   
   
 ## Size ####
+  patternnum<-"\\sGB|KB|MB"
   size1<-page%>%
     html_nodes(".l-row:nth-child(8) .large-6 , .l-row:nth-child(7) .large-6 , .l-row:nth-child(6) .large-6 , .large-6 .we-clamp__contents , .l-row:nth-child(2) .large-6 , .large-6 .link , .information-list__item:nth-child(1) .large-6")%>%
     html_text(trim=TRUE)
   size1<-size1[2]
+  
+  num<-gsub(pattern = patternnum, "", size1)
+  num<-as.double(num)
+  if(grepl("GB",size1)==TRUE){
+    size1<-num*1024
+  }else if (grepl("KB|kB",size1)==TRUE) {
+    size1<-num/1024
+  }else if (grepl("MB|mB",size1)==TRUE) {
+    size1<-num
+  }
   size<-c(size,size1)
   
-  ##PROVA PER GB MB KB CHE NON FUNGE
-  #  patternnum<-"\\d+"
-  # size1<-page%>%
-  # html_nodes(".l-row:nth-child(8) .large-6 , .l-row:nth-child(7) .large-6 , .l-row:nth-child(6) .large-6 , .large-6 .we-clamp__contents , .l-row:nth-child(2) .large-6 , .large-6 .link , .information-list__item:nth-child(1) .large-6")%>%
-  # html_text(trim=TRUE)
-  # size1<-size1[2]
-  # if(grepl("GB",size1)==TRUE){
-  #   num<-str_extract(size1, pattern = patternnum)
-  #   size1<-as.numeric(num)
-  #   size1<-size1[1]*1000
-  # }
-  # if(grepl("KB",size1)==TRUE){
-  #   num<-str_extract(size1, pattern = patternnum)
-  #   size1<-as.numeric(num)
-  #   size1<-size1/1000
-  # }
-  # m<-str_extract(size1, pattern = patternnum)
-  # size1<-as.numeric(num)
   
   ## Ratings per star (INTEGER)####
   ratingsxstar<-page%>%
