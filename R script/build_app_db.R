@@ -20,7 +20,7 @@ description=NULL     #5
 lastupdate<-NULL     #6
 version<-NULL        #7
 devname<-NULL        #8
-price<-NULL         #9
+price<-NULL          #9
 currency<-NULL
 appid<-NULL          #10
 
@@ -51,7 +51,7 @@ d3<-df[,1]
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 
 #4 Estrazione dei 27 attributi ####
-for (i in 115:130){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
+for (i in 1000:1120){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
@@ -138,7 +138,7 @@ for (i in 115:130){                           ###### METTO SOLO 4 PERCH? SE METT
   
   #Punteggio medio (DOUBLE)####
   avgrating1<-page%>%
-    html_nodes("we-clamp__contents")%>%   
+    html_nodes(".we-customer-ratings__averages__display")%>%   
     html_text(trim = TRUE)%>%                                  
     as.numeric(.)                                              
   if(length(avgrating1)=="0"){
