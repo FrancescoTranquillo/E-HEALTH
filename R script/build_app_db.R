@@ -32,6 +32,7 @@ size<-NULL           #15
 keywords<-NULL       #16
 iddev<-NULL          #17
 releasedate<-NULL    #18
+today<-NULL
 #19-20 Averageuser rat current + ALL???? in teoria sono due indici
 #20-21 NUm of user rating current+ALL????
 #21 Num user rating  --->gi? fatto?
@@ -50,7 +51,7 @@ d3<-df[,1]
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 
 #4 Estrazione dei 27 attributi ####
-for (i in 200:250){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
+for (i in 115:130){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
   page<-read_html(url)
   
@@ -169,12 +170,12 @@ for (i in 200:250){                           ###### METTO SOLO 4 PERCH? SE METT
   pegi<-c(pegi,pegi1)
   
   
-  #Categoria (STRINGA)####
+  # TOLTO QUINDI LASCIO IN COMMENTO Categoria (STRINGA)####
   
-  category1<-page%>%
-    html_node(".large-6 .link")%>%                         
-    html_text(trim=TRUE)
-  category<-c(category,category1)
+  #category1<-page%>%
+   # html_node(".large-6 .link")%>%                         
+    #html_text(trim=TRUE)
+  #category<-c(category,category1)
   
   #Descrizione (STRINGA)####
   
@@ -233,20 +234,25 @@ for (i in 200:250){                           ###### METTO SOLO 4 PERCH? SE METT
   price<-c(price,price1)
   currency<-c(currency,currency1)
   
+##DATA
+  today1<- Sys.Date()
+  today<-c(today,today1)
   
+    
 }
 #5 Creazione database ####
 data <- tibble("App ID"=appid, "App Name"=appname, "App URL"=appurl,
                "App description"=description, "Keywords"=keywords, "Version"=version,
                "Age rating"=pegi,"Language(s)"=lang, "Developer ID"=iddev, 
-               "Developer Name"=devname, "Category"=category, "Price"=price, "Currency"=currency,
+               "Developer Name"=devname, "Price"=price, "Currency"=currency,
                "Size"=size, "Last update date"=anydate(lastupdate),
                "Release Date"=anydate(releasedate), "Average user ratings-current"=avgrating,
                "Number of user ratings-current"=ratings, "% of user ratings with 5 stars"=fivestar,
                "% of user ratings with 4 stars"=fourstar,
                "% of user ratings with 3 stars"=threestar,
                "% of user ratings with 2 stars"=twostar,
-               "% of user ratings with 1 star"=onestar)
+               "% of user ratings with 1 star"=onestar,
+               "Date"=anydate(today))
 
 #6 Scrittura file ####
 write.csv2(data, "App_Database.csv", row.names = FALSE)
