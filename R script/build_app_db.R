@@ -51,11 +51,22 @@ d3<-df[,1]
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 
 #4 Estrazione dei 27 attributi ####
-rows<-1000:1120
+rows<-1:500
 p<-progress_estimated(length(rows))
-for (i in 1000:1120){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
+for (i in rows){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
-  page<-read_html(url)
+  
+  possibleError <- tryCatch(
+    read_html(url),
+    error=function(e) e
+  )
+  
+  if(inherits(possibleError, "error")){
+    next
+  } else {
+    page<-possibleError
+  }
+
 
 
 ## Keywords (HO BESTEMMIATO MALE) ####
