@@ -29,39 +29,61 @@ maxpagenumber
 letters<-c(LETTERS,"*")
 lenletters<-length(letters)
 
-#primo for: questo cicla tra tutte le lettere
-for(i in 1:lenletters) {
-
-letter<-letters[i]
-#secondo for: questo cicla da 1 al massimo numero
-#di pagine proprio di ogni lettera
-for(j in 1:maxpagenumber[i]){
-  url<-paste("https://itunes.apple.com/us/genre/ios-health-fitness/id6013?mt=8&letter=",letter,"&page=", j,"#page",sep="")
 
 
-page<-read_html(url)
-
-#3: Estrazione url delle app ####
-urls<- page%>%
-  rvest::html_nodes("#selectedcontent li")%>%
-  rvest::html_nodes("a")%>%
-  rvest::html_attr("href")
-
-#4: Estrazione nomi delle app ####
-nomi<- page%>%
-  rvest::html_nodes("#selectedcontent li")%>%
-  rvest::html_text()
-
-#5 Estrazione ID delle app ####
-IDs1<-gsub("(?<=)(.*)(id)", "", urls, perl = TRUE)
-IDs2<-gsub("(?<=[id])(\\d+)", "", IDs1, perl = TRUE)
-id<-gsub("\\?mt=8", "", IDs2)
-
-
-#6: Costruzione del dataset ####
-d = rbind(d, data.frame(Name= nomi, URL= urls, ID=id,category="Health&Fitness")) 
+for(k in 1:2){
+  if (k==1){
+    urlin <- "https://itunes.apple.com/us/genre/ios-health-fitness/id6013?mt=8&letter="
+    cat <- "Health&Fitness"
+  } else {
+    d = NULL
+    urlin <- "https://itunes.apple.com/us/genre/ios-medical/id6020?mt=8&letter="
+    cat <- "Medical"
+    
+  }
+  
+  
+  #primo for: questo cicla tra tutte le lettere
+  for(i in 1:lenletters) {
+    
+    
+    letter<-letters[i]
+    #secondo for: questo cicla da 1 al massimo numero
+    #di pagine proprio di ogni lettera
+    for(j in 1:2){
+      url<-paste(urlin,letter,"&page=", j,"#page",sep="")
+      
+      
+      page<-read_html(url)
+      
+      #3: Estrazione url delle app ####
+      urls<- page%>%
+        rvest::html_nodes("#selectedcontent li")%>%
+        rvest::html_nodes("a")%>%
+        rvest::html_attr("href")
+      
+      #4: Estrazione nomi delle app ####
+      nomi<- page%>%
+        rvest::html_nodes("#selectedcontent li")%>%
+        rvest::html_text()
+      
+      #5 Estrazione ID delle app ####
+      IDs1<-gsub("(?<=)(.*)(id)", "", urls, perl = TRUE)
+      IDs2<-gsub("(?<=[id])(\\d+)", "", IDs1, perl = TRUE)
+      id<-gsub("\\?mt=8", "", IDs2)
+      
+      
+      
+      #6: Costruzione del dataset ####
+      d = rbind(d, data.frame(Name= nomi, URL= urls, ID=id, Category= cat)) 
+    }
+  }
+  
+  if (k==1){
+    write.csv2(d, "HF.csv", row.names = FALSE)
+  } else {
+    
+    write.csv2(d, "M.csv", row.names = FALSE)
+  }
+  
 }
-}
-
-#7: Salvataggio del dataset in formato csv ####
-write.csv2(d, "AppH&FCat.csv", row.names = FALSE)
