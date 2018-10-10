@@ -64,4 +64,4 @@ d = rbind(d, data.frame(Name= nomi, URL= urls, ID=id,category="Health&Fitness"))
 }
 
 #7: Salvataggio del dataset in formato csv ####
-write.csv2(d, "AppH&FCat.csv")
+write.csv2(d, "AppH&FCat.csv", row.names = FALSE)
