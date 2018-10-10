@@ -59,9 +59,9 @@ id<-gsub("\\?mt=8", "", IDs2)
 
 
 #6: Costruzione del dataset ####
-d = rbind(d, data.frame(Name= nomi, URL= urls, ID=id)) 
+d = rbind(d, data.frame(Name= nomi, URL= urls, ID=id,category="Health&Fitness")) 
 }
 }
 
 #7: Salvataggio del dataset in formato csv ####
-write.csv2(d, "appinfo2.csv")
+write.csv2(d, "AppH&FCat.csv")
