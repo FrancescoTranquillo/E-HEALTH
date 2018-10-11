@@ -18,7 +18,7 @@ df2<-NULL
 df3<-NULL
 SoloDuplicati<-NULL
 SoloUnici<-NULL
-Merged<-NULL
+Mertab <-NULL
 
 #Creo 2 DataFrame dalle 2 tabelle Medical e Health&Fitness
 
@@ -41,12 +41,12 @@ SoloDuplicati[,4]<-"Both"               #Sostituisco categoria con "Both", il nu
 
 SoloUnici<-df3[!(duplicated(df3$ID) | duplicated(df3$ID, fromLast = TRUE)), ]
 
-Mer<-rbind(SoloUnici, SoloDuplicati)
+Mertab<-rbind(SoloUnici, SoloDuplicati)
 
 #Ordino alfabeticamente le righe del DF (Mette prima simboli e numeri)
 
-Mer = Mer[order(Mer$Name),]
+Mertab = Mertab[order(Mertab$Name),]
 
 #Creo file CSV
 
-write.csv2(Mer, "Merged_db.csv", row.names = FALSE)
+write.csv2(Mertab, "Merged_db.csv", row.names = FALSE)
