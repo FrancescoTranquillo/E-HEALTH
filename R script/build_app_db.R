@@ -44,14 +44,15 @@ onestar<-NULL        #26 % 1star
 #27 Date RETRIEVED  ----->gi? fatto?
 
 #3 Lettura app inglesi ####
-df<-read.csv2("app_M_H&F_ENGLISH_ONLY.csv", stringsAsFactors = FALSE)
+df<-read.csv2("Merged_db.csv", stringsAsFactors = FALSE)
 dc<- df[,2]  ##prendo seconda colonna dove ci sono gli url                                                             ##prendo seconda colonna dove ci sono gli url
 d2<- df[,3]
 d3<-df[,1]
+d44<- df[,4]
 len<-length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 
 #4 Estrazione dei 27 attributi ####
-rows<-1:500
+rows<-100:140
 p<-progress_estimated(length(rows))
 for (i in rows){                           ###### METTO SOLO 4 PERCH? SE METTESSI "len" (DI RIGA 23) CIAONE, CI METTEREBBE 6 GIORNI E NONCCCCI?VOGLIA
   url<- dc[i]                             ######url prende l'iesima riga di dc che sarebbe la seconda colonna fatta da getinfo.r dove ci sono gli url e la apro in page
@@ -67,7 +68,9 @@ for (i in rows){                           ###### METTO SOLO 4 PERCH? SE METTESS
     page<-possibleError
   }
 
-
+## CATEGORY
+  category1<-d44[i]
+  category<-c(category,category1)
 
 ## Keywords (HO BESTEMMIATO MALE) ####
   keywords1<-page%>%
@@ -258,7 +261,7 @@ data <- tibble("App ID"=appid, "App Name"=appname, "App URL"=appurl,
                "App description"=description, "Keywords"=keywords, "Version"=version,
                "Age rating"=pegi,"Language(s)"=lang, "Developer ID"=iddev,
                "Developer Name"=devname, "Price"=price, "Currency"=currency,
-               "Size"=size, "Last update date"=anydate(lastupdate),
+               "Size"=size, "Last update date"=anydate(lastupdate), "category"=category,
                "Release Date"=anydate(releasedate), "Average user ratings-current"=avgrating,
                "Number of user ratings-current"=ratings, "% of user ratings with 5 stars"=fivestar,
                "% of user ratings with 4 stars"=fourstar,
@@ -268,4 +271,4 @@ data <- tibble("App ID"=appid, "App Name"=appname, "App URL"=appurl,
                "Date"=anydate(today))
 
 #6 Scrittura file ####
-write.csv2(data, "App_Database.csv", row.names = FALSE)
+write.csv2(data, "App_DatabaseProva.csv", row.names = FALSE)
