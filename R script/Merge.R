@@ -25,6 +25,11 @@ Merged<-NULL
 df1<-read.csv2("HF.csv")
 df2<-read.csv2("M.csv")
 
+#elimino duplicati iniziali
+
+df1<- unique(df1)
+df2 <- unique(df2)
+
 #Creo DataFrame unito
 
 df3<-rbind(df1, df2)
@@ -36,12 +41,12 @@ SoloDuplicati[,4]<-"Both"               #Sostituisco categoria con "Both", il nu
 
 SoloUnici<-df3[!(duplicated(df3$ID) | duplicated(df3$ID, fromLast = TRUE)), ]
 
-Merged<-rbind(SoloUnici, SoloDuplicati)
+Mer<-rbind(SoloUnici, SoloDuplicati)
 
 #Ordino alfabeticamente le righe del DF (Mette prima simboli e numeri)
 
-Merged = Merged[order(Merged$Name),]
+Mer = Mer[order(Mer$Name),]
 
 #Creo file CSV
 
-write.csv2(Merged, "Merged_db.csv", row.names = FALSE)
+write.csv2(Mer, "Merged_db.csv", row.names = FALSE)
