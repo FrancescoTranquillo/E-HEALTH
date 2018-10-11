@@ -63,9 +63,14 @@ for (k in 1:2) {
         rvest::html_nodes("a") %>%
         rvest::html_attr("href")
       
+      if(length(urls)=="0"){
+        urls<-NA
+        nomi<-NA
+        id<-NA
+      } else{
       #4: Estrazione nomi delle app ####
       nomi <- page %>%
-        rvest::html_nodes("#selectedcontent li") %>%
+        rvest::html_nodes("#selectedcontent a") %>%
         rvest::html_text()
       
       #5 Estrazione ID delle app ####
@@ -73,7 +78,7 @@ for (k in 1:2) {
       IDs2 <- gsub("(?<=[id])(\\d+)", "", IDs1, perl = TRUE)
       id <- gsub("\\?mt=8", "", IDs2)
       
-      
+      }
       
       #6: Costruzione del dataset ####
       d <- rbind(d, data.frame(Name= nomi, URL= urls, ID=id, Category= cat))
