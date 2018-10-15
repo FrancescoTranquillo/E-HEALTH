@@ -19,21 +19,16 @@ library(jsonlite)
 library(purrrlyr)
 library(parallel)
 library(microbenchmark)
-
+#id<-1178589519
 
 df <- read.csv2("M.csv", header = TRUE, stringsAsFactors = FALSE)
 df<-df[!duplicated(df),]
-df<-df[1:150,]
+df<-df[1:2000,]
 
 nr <- nrow(df)
 n<-7
 a<-split(df, rep(1:ceiling(nr/n), each=n, length.out=nr))
 
-api.bridge<-function(x){
-  listid<-as.list(x$ID)
-  lapply(listid, api.single)
-  
-}
 
 api.single<-function(id){
   
@@ -42,6 +37,15 @@ api.single<-function(id){
   urlapp <- GET(url = urlID)
   cont <- fromJSON(txt = content(urlapp))
   appdata <- cont[["results"]]
+  
+  if (length(appdata) == 0) {
+    attrs <- data.frame(matrix(NA, nrow = 1, ncol = 17))%>%
+      cbind(.,id)
+  } else{
+  
+  
+  
+  
   appdesc <- appdata$description
   appversion <- appdata$version
   appagerating <- appdata$contentAdvisoryRating
@@ -100,7 +104,8 @@ api.single<-function(id){
     appallnorating <- NA
   
   appurl<-appdata$trackViewUrl
-  
+  # 
+  print(id)
   attrs <- data.frame(
     "Description" = appdesc,
     "Version" = appversion,
@@ -112,66 +117,90 @@ api.single<-function(id){
     "Price" = appprice,
     "Currency" = appcurr,
     "Size" = appsize,
-    "Last update date" =  applastupdatedate,#anytime::anydate(applastupdatedate),
-    "Release Date" = appreleasedate,#anytime::anydate(appreleasedate),
+    "Last update date" =  applastupdatedate, #anytime::anydate(applastupdatedate),
+    "Release Date" = appreleasedate, #anytime::anydate(appreleasedate),
     "Average user ratings-current" =  appcurravgr,
     "Number of user ratings-current" = appcurrnorating,
     "Average user ratings-all" = appallavgr,
     "Number of user ratings-all" = appallnorating,
     "Date" = anydate(Sys.Date()),
-    "URL" = appurl
+    "ID" = id,
+    stringsAsFactors = FALSE
   )
-  # attrs<-c(appdesc,appversion,appagerating,applanguages,devid,devname,devurl,appprice,appcurr,appsize,applastupdatedate,
-  #          appreleasedate,appcurr,appcurrnorating,appallavgr,appallnorating,anydate(Sys.Date()),appurl)
-  # data.frame(attrs,stringsAsFactors = FALSE)
-}
-
-
-t<-api.single(382952264)
-
-api.list<-function(id.list){
-  t<-lapply(X = id.list, api.single)
+  }
+  names(attrs)<-c("Description", "Version", "Age Rating","Language(s)",
+              "Developer ID", "Developer Name", "Developer URL",
+              "Price", "Currency", "Size", "Last Update Date", 
+              "Release Date", "Average user ratings-current",
+              "Number of user ratings-current", "Average user ratings-all",
+              "Number of user ratings-all", "Date","ID")
+  return(attrs)
 
 }
 
-z<-api.list(as.list(df[,3]))
 
-names(z)<-c("Description", "Version", "Age Rating","Language(s)",
-            "Developer ID", "Developer Name", "Developer URL",
-            "Price", "Currency", "Size", "Last Update Date", 
-            "Release Date", "Average user ratings-current",
-            "Number of user ratings-current", "Average user ratings-all",
-            "Number of user ratings-all", "Date","URL")
 
-# cl <- makeCluster(detectCores() - 1)
-# clusterEvalQ(cl, { library(Rcrawler)
-#   library(plyr)
-#   library(dplyr)
-#   library(Rcrawler)
-#   library(tidyverse)
-#   library(rvest)
-#   library(stringr)
-#   library(rebus)
-#   library(urltools)
-#   library(RCurl)
-#   library(gdata)
-#   library(anytime)
-#   library(dplyr)
-#   library(lubridate)
-#   library(progress)
-#   library(httr)
-#   library(jsonlite)
-#   library(purrrlyr)
-#   library(parallel)
-#   library(microbenchmark)
-#   library(tictoc)
-# })
-# 
-# clusterExport(cl, c( "api.bridge", "api.single"))
-# tictoc::tic()
-# 
-# 
-# apidf<-parLapply(cl, a, api.bridge)%>%
-#   do.call("rbind",.)
-# db_final<-merge(df, apidf, all = TRUE)
-# tictoc::toc()
+
+api.list.id<-function(id.list){
+  t<-lapply(X = id.list, api.single)%>%
+    do.call("rbind",.)
+
+}
+
+id.extractor<-function(df){
+  id<-df[3]
+}
+
+
+api.subset<-function(subset.list){
+  id.list<-lapply(X  = subset.list, id.extractor )%>%
+    do.call("rbind",.)
+}
+tictoc::tic()
+z<-lapply(api.subset(a),api.list.id)%>%
+  do.call("rbind",.)
+
+final_db<-merge(df,z,all=TRUE)
+tictoc::toc()
+
+
+
+
+
+
+cl <- makeCluster(detectCores() - 1)
+clusterEvalQ(cl, { library(Rcrawler)
+  library(plyr)
+  library(dplyr)
+  library(tidyverse)
+  library(rvest)
+  library(stringr)
+  library(rebus)
+  library(urltools)
+  library(RCurl)
+  library(gdata)
+  library(anytime)
+  library(dplyr)
+  library(lubridate)
+  library(progress)
+  library(httr)
+  library(jsonlite)
+  library(purrrlyr)
+  library(parallel)
+  library(microbenchmark)
+  library(tictoc)
+})
+
+clusterExport(cl, c( "api.list.id","api.single", "api.subset","id.extractor"))
+
+id.list<-parLapply(cl, a, id.extractor)%>%
+  unlist(.)
+tictoc::tic()
+
+
+
+
+apidf<-parLapply(cl, id.list, api.list.id)%>%
+  do.call("rbind",.)
+final_db_multithreaded<-merge(df,apidf,all = TRUE)
+tictoc::toc()
