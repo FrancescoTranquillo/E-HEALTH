@@ -20,7 +20,7 @@ library(purrrlyr)
 library(parallel)
 library(microbenchmark)
 
-n<-10
+n<-100
 
 df <- read.csv2("Merged_db.csv", stringsAsFactors = FALSE)%>%
   .[!duplicated(.),]%>%
@@ -29,10 +29,14 @@ df <- read.csv2("Merged_db.csv", stringsAsFactors = FALSE)%>%
 list_url<-as.list(df[,2])
 
 tictoc::tic()
-source("f_addattributes.r",echo=TRUE)
+source("f_addattributes.r")
 closeAllConnections()
 tictoc::toc()
+rbind
 
-g<-g%>%do.call("rbind",.)
+attrs<-g%>%do.call("rbind",.)
 
-final_db<-merge(df, g, all = TRUE)
+final_db<-merge(df, attrs, all = TRUE)
+
+filename<-paste("Sample_", n, ".csv", sep = "")
+write.csv2(final_db, filename,row.names = FALSE)

@@ -58,7 +58,7 @@ len <-
   length(dc)                                                          ##prendo lunghezza in len sar? la fine del ciclo quando ci decidiamo con
 
 #4 Estrazione dei 27 attributi ####
-rows <- 1:2000
+rows <- 1:40
 # p <- progress_estimated(rows)
 tictoc::tic()
 for (i in rows) {

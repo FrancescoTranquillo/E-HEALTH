@@ -14,33 +14,7 @@ addattributes <- function(url) {
   if (inherits(possibleError, "error")) {
     attrs <- data.frame(matrix(NA, nrow = 1, ncol = 21)) %>%
       cbind(., url)
-    names(attrs)<-c("Description",
-                    "Keywords",
-                    "Version",
-                    "Age rating",
-                    "Language(s)",
-                    "Developer ID",
-                    "Developer Name",
-                    "Developer URL",
-                    "Price",
-                    "Currency",
-                    "Size",
-                    "Last update date",
-                    #anytime::anydate(applastupdatedate),
-                    "Release Date",
-                    #anytime::anydate(appreleasedate),
-                    "Average user ratings-current",
-                    "Number of user ratings-current",
-                    # "Average user ratings-all" = appallavgr,
-                    # "Number of user ratings-all" = appallnorating,
-                    "% of user ratings with 5 stars",
-                    "% of user ratings with 4 stars",
-                    "% of user ratings with 3 stars",
-                    "% of user ratings with 2 stars",
-                    "% of user ratings with 1 star",
-                    "Date",
-                    "URL")
-    return(attrs)
+
   } else {
     page <- possibleError
   
@@ -193,15 +167,12 @@ addattributes <- function(url) {
   
   if (price == "Free") {
     price <- 0
-    currency <- 0
+    currency <- NA
   } else {
     currency <- str_extract(price, currencypattern)
     price <- gsub(currencypattern, "", price)
     price <- as.numeric(price)
   }
-  
-  
-  
   
   attrs <- data.frame(
     "Description" = description,
@@ -232,11 +203,37 @@ addattributes <- function(url) {
     "URL" = url,
     stringsAsFactors = FALSE
   )
+  }
+  names(attrs) <-
+    c(
+      "Description",
+      "Keywords" ,
+      "Version",
+      "Age Rating",
+      "Language(s)",
+      "Developer ID",
+      "Developer Name",
+      "Developer URL",
+      "Price",
+      "Currency",
+      "Size",
+      "Last Update Date",
+      "Release Date",
+      "Average user ratings-current",
+      "Number of user ratings-current",
+      "% of user ratings with 5 stars",
+      "% of user ratings with 4 stars",
+      "% of user ratings with 3 stars",
+      "% of user ratings with 2 stars",
+      "% of user ratings with 1 star",
+      "Date",
+      "URL"
+    )
   
   
   return(attrs)
   }
-}
+
 
 cl <- makeCluster(detectCores() - 1)
 
