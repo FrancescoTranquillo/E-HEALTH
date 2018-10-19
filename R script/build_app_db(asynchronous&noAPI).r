@@ -17,10 +17,9 @@ library(progress)
 library(httr)
 library(jsonlite)
 library(purrrlyr)
-library(parallel)
-library(microbenchmark)
 
-n<-100
+
+n<-15
 
 df <- read.csv2("Merged_db.csv", stringsAsFactors = FALSE)%>%
   .[!duplicated(.),]%>%
@@ -37,6 +36,7 @@ rbind
 attrs<-g%>%do.call("rbind",.)
 
 final_db<-merge(df, attrs, all = TRUE)
+
 
 filename<-paste("Sample_", n, ".csv", sep = "")
 write.csv2(final_db, filename,row.names = FALSE)

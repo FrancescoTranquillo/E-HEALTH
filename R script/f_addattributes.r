@@ -3,8 +3,7 @@
 
 
 addattributes <- function(url) {
-  Sys.sleep(1)
-  print("paused for 1 sec")
+  
   possibleError <- tryCatch(
     read_html(url),
     error = function(e)
@@ -186,9 +185,9 @@ addattributes <- function(url) {
     "Price" = price,
     "Currency" = currency,
     "Size" = size,
-    "Last update date" =  lastupdate,
+    "Last update date" =  anytime(parse_date_time(lastupdate, orders = "b d Y")),
     #anytime::anydate(applastupdatedate),
-    "Release Date" = releasedate,
+    "Release Date" = anytime(parse_date_time(releasedate, orders = "b d Y")),
     #anytime::anydate(appreleasedate),
     "Average user ratings-current" = avgrating,
     "Number of user ratings-current" = ratings,
@@ -234,32 +233,33 @@ addattributes <- function(url) {
   return(attrs)
   }
 
+g <- lapply(list_url, addattributes)
 
-cl <- makeCluster(detectCores() - 1)
-
-clusterEvalQ(cl, {
-  library(Rcrawler)
-  library(plyr)
-  library(dplyr)
-  library(tidyverse)
-  library(rvest)
-  library(stringr)
-  library(rebus)
-  library(urltools)
-  library(RCurl)
-  library(gdata)
-  library(anytime)
-  library(dplyr)
-  library(lubridate)
-  library(progress)
-  library(httr)
-  library(jsonlite)
-  library(purrrlyr)
-  library(parallel)
-  library(microbenchmark)
-  library(tictoc)
-})
-
-clusterExport(cl, "addattributes")
-
-g <- parLapply(cl, list_url, addattributes)
+# cl <- makeCluster(detectCores() - 1)
+# 
+# clusterEvalQ(cl, {
+#   library(Rcrawler)
+#   library(plyr)
+#   library(dplyr)
+#   library(tidyverse)
+#   library(rvest)
+#   library(stringr)
+#   library(rebus)
+#   library(urltools)
+#   library(RCurl)
+#   library(gdata)
+#   library(anytime)
+#   library(dplyr)
+#   library(lubridate)
+#   library(progress)
+#   library(httr)
+#   library(jsonlite)
+#   library(purrrlyr)
+#   library(parallel)
+#   library(microbenchmark)
+#   library(tictoc)
+# })
+# 
+# clusterExport(cl, "addattributes")
+# 
+# g <- parLapply(cl, list_url, addattributes)
