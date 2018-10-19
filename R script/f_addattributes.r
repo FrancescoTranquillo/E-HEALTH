@@ -233,33 +233,32 @@ addattributes <- function(url) {
   return(attrs)
   }
 
-g <- lapply(list_url, addattributes)
+# g <- lapply(list_url, addattributes)
 
-# cl <- makeCluster(detectCores() - 1)
-# 
-# clusterEvalQ(cl, {
-#   library(Rcrawler)
-#   library(plyr)
-#   library(dplyr)
-#   library(tidyverse)
-#   library(rvest)
-#   library(stringr)
-#   library(rebus)
-#   library(urltools)
-#   library(RCurl)
-#   library(gdata)
-#   library(anytime)
-#   library(dplyr)
-#   library(lubridate)
-#   library(progress)
-#   library(httr)
-#   library(jsonlite)
-#   library(purrrlyr)
-#   library(parallel)
-#   library(microbenchmark)
-#   library(tictoc)
-# })
-# 
-# clusterExport(cl, "addattributes")
-# 
-# g <- parLapply(cl, list_url, addattributes)
+cl <- makeCluster(detectCores() - 1)
+
+clusterEvalQ(cl, {
+  library(Rcrawler)
+  library(plyr)
+  library(dplyr)
+  library(tidyverse)
+  library(rvest)
+  library(stringr)
+  library(rebus)
+  library(urltools)
+  library(RCurl)
+  library(gdata)
+  library(anytime)
+  library(dplyr)
+  library(lubridate)
+  library(progress)
+  library(httr)
+  library(jsonlite)
+  library(purrrlyr)
+  library(parallel)
+  library(tictoc)
+})
+
+clusterExport(cl, "addattributes")
+
+g <- parLapply(cl, list_url, addattributes)
