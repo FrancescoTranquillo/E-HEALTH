@@ -23,8 +23,7 @@ piece<-readline("Inserisci il numero della cartella: ")
 part<-readline("Di quale parte vuoi estrarre gli attributi? ")
 filename<-paste0("~/GitHub/E-HEALTH/R script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,".csv")
 df <- read.csv2(filename, stringsAsFactors = FALSE)%>%
-  .[!duplicated(.),]%>%
-  .[1:5,]
+  .[!duplicated(.),]
   # %>%
   # .[sample(nrow(.), n,),]
 
