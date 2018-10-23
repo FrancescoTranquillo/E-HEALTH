@@ -15,4 +15,5 @@ install.packages(c("plyr",
 "progress",
 "httr",
 "jsonlite",
-"purrrlyr"))
+"purrrlyr",
+"pbapply"))

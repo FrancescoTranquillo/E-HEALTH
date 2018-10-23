@@ -345,5 +345,5 @@ addattributes <- function(url) {
   }
   return(attrs)}
 tictoc::tic()
-g <- pbapply::pblapply(list_url, addattributes)
+g <- pblapply(list_url, addattributes)
 tictoc::toc()
