@@ -1,5 +1,5 @@
 rm(list = ls())
-
+#Sys.sleep(60)
 library(plyr)
 library(dplyr)
 library(Rcrawler)
@@ -18,25 +18,28 @@ library(httr)
 library(jsonlite)
 library(purrrlyr)
 
-
-n<-15
-
-df <- read.csv2("Merged_db.csv", stringsAsFactors = FALSE)%>%
+delay<-2.85
+piece<-readline("Inserisci il numero della cartella: ")
+part<-readline("Di quale parte vuoi estrarre gli attributi? ")
+filename<-paste0("~/GitHub/E-HEALTH/R script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,".csv")
+df <- read.csv2(filename, stringsAsFactors = FALSE)%>%
   .[!duplicated(.),]%>%
-  .[sample(nrow(.), n),]
+  .[1:5,]
+  # %>%
+  # .[sample(nrow(.), n,),]
 
 list_url<-as.list(df[,2])
 
-tictoc::tic()
+
 source("f_addattributes.r")
+
 closeAllConnections()
-tictoc::toc()
-rbind
+
 
 attrs<-g%>%do.call("rbind",.)
 
 final_db<-merge(df, attrs, all = TRUE)
 
 
-filename<-paste("Sample_", n, ".csv", sep = "")
+filename<-paste0("~/GitHub/E-HEALTH/R script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,"_completed.csv", sep = "")
 write.csv2(final_db, filename,row.names = FALSE)
