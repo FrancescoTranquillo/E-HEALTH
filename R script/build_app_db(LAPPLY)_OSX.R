@@ -41,5 +41,5 @@ attrs<-g%>%do.call("rbind",.)
 final_db<-merge(df, attrs, all = TRUE)
 
 
-filename<-paste0("~/GitHub/E-HEALTH/R script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,"_completed.csv", sep = "")
+filename<-paste0("~/Documents/GitHub/E-HEALTH/R\ script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,"_completed.csv", sep = "")
 write.csv2(final_db, filename,row.names = FALSE)
