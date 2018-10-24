@@ -24,7 +24,7 @@ piece <- readline("Inserisci il numero della cartella: ")
 part <- readline("Di quale parte vuoi estrarre gli attributi? ")
 filename <-
   paste0(
-    "~/GitHub/E-HEALTH/R script/Merged_splitted/",
+    "~/Documents/GitHub/E-HEALTH/R script/Merged_splitted/",
     piece,
     "/Merged_db_piece_",
     piece,
@@ -52,7 +52,7 @@ final_db <- merge(df, attrs, all = TRUE)
 
 filename <-
   paste0(
-    "~/GitHub/E-HEALTH/R script/Merged_splitted/",
+    "~/Documents/GitHub/E-HEALTH/R script/Merged_splitted/",
     piece,
     "/Merged_db_piece_",
     piece,
