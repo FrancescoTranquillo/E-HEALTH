@@ -19,32 +19,48 @@ library(jsonlite)
 library(purrrlyr)
 
 
-unlink(x = "~/GitHub/E-HEALTH/R script/HF_splitted",recursive = T)
+unlink(x = "~/GitHub/E-HEALTH/R script/Merged_splitted", recursive = T)
 
-df <- read.csv2("HF.csv", stringsAsFactors = FALSE)%>%
-  .[!duplicated(.),]
-  
+df <- read.csv2("Merged_db.csv", stringsAsFactors = FALSE) %>%
+  .[!duplicated(.), ]
 
-n<-as.numeric(readline("In quante parti vuoi dividere il dataframe?   "))
 
-df.list<-split(df, rep(1:n, length.out = nrow(df), each = ceiling(nrow(df)/n)))
+n <-
+  as.numeric(readline("In quante cartelle vuoi dividere il dataframe?   "))
 
-dir.create(file.path("~/GitHub/E-HEALTH/R script","HF_splitted"))
+df.list <-
+  split(df, rep(1:n, length.out = nrow(df), each = ceiling(nrow(df) / n)))
 
-for (i in 1:n){
+
+dir.create(file.path("~/GitHub/E-HEALTH/R script", "Merged_splitted"))
+
+m <-
+  as.numeric(readline("Quante parti vuoi in ogni cartella?   "))
+
+for (i in 1:n) {
   print(i)
-
-  dir.create(file.path("~/GitHub/E-HEALTH/R script/HF_splitted",i))
+  
+  dir.create(file.path("~/GitHub/E-HEALTH/R script/Merged_splitted", i))
   dfs <- df.list[[i]]
   
-  n<-2
+ # n <- 4
   
-  dfs.list<-split(dfs, rep(1:n, length.out = nrow(dfs), each = ceiling(nrow(dfs)/n)))
+  dfs.list <-
+    split(dfs, rep(1:m, length.out = nrow(dfs), each = ceiling(nrow(dfs) / m)))
   
-  for (j in 1:n){
-  filename2<-paste0("~/GitHub/E-HEALTH/R script/HF_splitted/",i,"/","HF_db_piece_", i,"_part_",j, ".csv", sep="")
-  write.csv2(dfs.list[[j]], filename2, row.names = FALSE)
+  for (j in 1:m) {
+    filename2 <-
+      paste0(
+        "~/GitHub/E-HEALTH/R script/Merged_splitted/",
+        i,
+        "/",
+        "Merged_db_piece_",
+        i,
+        "_part_",
+        j,
+        ".csv",
+        sep = ""
+      )
+    write.csv2(dfs.list[[j]], filename2, row.names = FALSE)
   }
 }
-
-
