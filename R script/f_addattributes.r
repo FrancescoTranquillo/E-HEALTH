@@ -138,6 +138,10 @@ addattributes <- function(url) {
         html_text(trim = TRUE) %>%
         .[5]
       
+      if (length(lang)=="0"){
+        lang<-NA
+      }
+      
       
       ## Size ####
       patternnum <- "\\sGB|KB|MB"
