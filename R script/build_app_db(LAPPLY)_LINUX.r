@@ -19,16 +19,25 @@ library(jsonlite)
 library(purrrlyr)
 library(pbapply)
 
-delay<-2.85
-piece<-readline("Inserisci il numero della cartella: ")
-part<-readline("Di quale parte vuoi estrarre gli attributi? ")
-filename<-paste0("~/Documents/GitHub/E-HEALTH/R script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,".csv")
-df <- read.csv2(filename, stringsAsFactors = FALSE)%>%
-  .[!duplicated(.),]
-  # %>%
-  # .[sample(nrow(.), n,),]
+delay <- 2.85
+piece <- readline("Inserisci il numero della cartella: ")
+part <- readline("Di quale parte vuoi estrarre gli attributi? ")
+filename <-
+  paste0(
+    "~/GitHub/E-HEALTH/R script/Merged_splitted/",
+    piece,
+    "/Merged_db_piece_",
+    piece,
+    "_part_",
+    part,
+    ".csv"
+  )
+df <- read.csv2(filename, stringsAsFactors = FALSE) %>%
+  .[!duplicated(.), ]
+# %>%
+#   .[sample(nrow(.), 15),]
 
-list_url<-as.list(df[,2])
+list_url <- as.list(df[, 2])
 
 
 source("f_addattributes.r")
@@ -36,10 +45,20 @@ source("f_addattributes.r")
 closeAllConnections()
 
 
-attrs<-g%>%do.call("rbind",.)
+attrs <- g %>% do.call("rbind", .)
 
-final_db<-merge(df, attrs, all = TRUE)
+final_db <- merge(df, attrs, all = TRUE)
 
 
-filename<-paste0("~/Documents/GitHub/E-HEALTH/R script/HF_splitted/",piece,"/HF_db_piece_",piece,"_part_",part,"_completed.csv", sep = "")
-write.csv2(final_db, filename,row.names = FALSE)
+filename <-
+  paste0(
+    "~/GitHub/E-HEALTH/R script/Merged_splitted/",
+    piece,
+    "/Merged_db_piece_",
+    piece,
+    "_part_",
+    part,
+    "_completed.csv",
+    sep = ""
+  )
+write.csv2(final_db, filename, row.names = FALSE)
