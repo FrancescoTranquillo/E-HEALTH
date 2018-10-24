@@ -145,8 +145,8 @@ addattributes <- function(url) {
         html_nodes(
           ".l-row:nth-child(8) .large-6 , .l-row:nth-child(7) .large-6 , .l-row:nth-child(6) .large-6 , .large-6 .we-clamp__contents , .l-row:nth-child(2) .large-6 , .large-6 .link , .information-list__item:nth-child(1) .large-6"
         ) %>%
-        html_text(trim = TRUE) %>%
-        .[2]
+      html_text(trim = TRUE) %>%
+      .[2]
       
       num <- gsub(pattern = patternnum, "", size)
       num <- as.double(num)
@@ -156,6 +156,8 @@ addattributes <- function(url) {
         size <- num / 1024
       } else if (grepl("MB|mB", size) == TRUE) {
         size <- num
+      } else {
+        size<-NA
       }
       size <- signif(size, digits = 3)
       ## Ratings per star (INTEGER)####
@@ -262,6 +264,11 @@ addattributes <- function(url) {
         html_node(".inline-list__item--bulleted:nth-child(1)") %>%
         html_text(trim = TRUE)
       
+      if(is.na(price)==T){
+        price<-NA
+        currency<-NA
+      } else{
+      
       if (price == "Free") {
         price <- 0
         currency <- NA
@@ -269,6 +276,7 @@ addattributes <- function(url) {
         currency <- str_extract(price, currencypattern)
         price <- gsub(currencypattern, "", price)
         price <- as.numeric(price)
+      }
       }
       
       attrs <- data.frame(
