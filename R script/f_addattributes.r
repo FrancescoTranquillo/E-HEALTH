@@ -149,8 +149,8 @@ addattributes <- function(url) {
         html_nodes(
           ".l-row:nth-child(8) .large-6 , .l-row:nth-child(7) .large-6 , .l-row:nth-child(6) .large-6 , .large-6 .we-clamp__contents , .l-row:nth-child(2) .large-6 , .large-6 .link , .information-list__item:nth-child(1) .large-6"
         ) %>%
-      html_text(trim = TRUE) %>%
-      .[2]
+        html_text(trim = TRUE) %>%
+        .[2]
       
       num <- gsub(pattern = patternnum, "", size)
       num <- as.double(num)
@@ -241,12 +241,15 @@ addattributes <- function(url) {
         gsub(",", "", .)
       
       if (length(lastupdatedates) == "0") {
-        lastupdatedates <- NA
+        lastupdate<-NA
+        releasedate<-NA
+      }else{
+        
+        lastupdate <- first(lastupdatedates)%>%
+          parse_date_time2(., orders = "b d Y")
+        releasedate <- last(lastupdatedates)%>%
+          parse_date_time2(., orders = "b d Y")
       }
-      
-      lastupdate <- first(lastupdatedates)
-      releasedate <- last(lastupdatedates)
-      
       #Ultima versione app (STRINGA) ####
       
       version <- page %>%
@@ -272,15 +275,15 @@ addattributes <- function(url) {
         price<-NA
         currency<-NA
       } else{
-      
-      if (price == "Free") {
-        price <- 0
-        currency <- NA
-      } else {
-        currency <- str_extract(price, currencypattern)
-        price <- gsub(currencypattern, "", price)
-        price <- as.numeric(price)
-      }
+        
+        if (price == "Free") {
+          price <- 0
+          currency <- NA
+        } else {
+          currency <- str_extract(price, currencypattern)
+          price <- gsub(currencypattern, "", price)
+          price <- as.numeric(price)
+        }
       }
       
       attrs <- data.frame(
@@ -295,8 +298,10 @@ addattributes <- function(url) {
         "Price" = price,
         "Currency" = currency,
         "Size" = size,
-        "Last update date" =  anytime(parse_date_time(lastupdate, orders = "b d Y",locale="us")),
-        "Release Date" = anytime(parse_date_time(releasedate, orders = "b d Y",locale = "us")),
+        "Last update date" =  lastupdate,
+        #anytime(parse_date_time(lastupdate, orders = "b d Y")),
+        "Release Date" = releasedate,
+        #anytime(parse_date_time(releasedate, orders = "b d Y")),
         "Average user rating" = avgrating,
         "Number of user ratings" = ratings,
         "% of user ratings with 5 stars" = fivestar,
