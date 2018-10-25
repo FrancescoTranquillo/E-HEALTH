@@ -19,7 +19,7 @@ library(jsonlite)
 library(purrrlyr)
 library(pbapply)
 
-delay <- 2.85
+delay <- 0
 piece <- readline("Inserisci il numero della cartella: ")
 part <- readline("Di quale parte vuoi estrarre gli attributi? ")
 filename <-
