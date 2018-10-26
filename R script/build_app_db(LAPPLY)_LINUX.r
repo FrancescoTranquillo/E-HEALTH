@@ -34,8 +34,8 @@ filename <-
   )
 df <- read.csv2(filename, stringsAsFactors = FALSE) %>%
   .[!duplicated(.), ]
-# %>%
-#   .[sample(nrow(.), 15),]
+#%>%
+ # .[sample(nrow(.), 150),]
 
 list_url <- as.list(df[, 2])
 
@@ -45,7 +45,9 @@ source("f_addattributes.r")
 closeAllConnections()
 
 
-attrs <- g %>% do.call("rbind", .)
+#attrs <- g %>% do.call("rbind", .)
+attrs<-bind_rows(g)
+
 
 final_db <- merge(df, attrs, all = TRUE)
 
