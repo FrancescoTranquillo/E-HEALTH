@@ -43,7 +43,7 @@ clusterEvalQ(cl, {
 })
 
 clusterExport(cl,
-              c("descr", "language.detector", "descr.trimmed"))
+              c("descr", "language.detector"))
 message("riconoscimento lingue avviato...")
 
 lingue_identificate<-pblapply(descr, language.detector,cl = cl)
