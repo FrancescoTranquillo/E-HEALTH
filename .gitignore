@@ -2,7 +2,7 @@
 R script/.Rhistory
 R script/.Rhistory
 R script/build_app_db(LAPPLY)_WINDOWS.r
-*.r
 R script/build_app_db(LAPPLY)_WINDOWS.r
 R script/Database_preprocessing.csv
 R script/Database_preprocessed_english.csv
+R script/Part1/Database_preprocessing.csv
