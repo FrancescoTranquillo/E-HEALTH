@@ -5,6 +5,7 @@ library(tidyverse)
 library(pbapply)
 library(reshape2)
 library(ggplot2)
+library(data.table)
 #leggo l'output di metamap
 metaout <- read_html("25_FRA_out.xml")
 
@@ -37,10 +38,6 @@ extract_output <- function(x) {
     html_nodes("matchedword") %>%
     html_text(trim = F)
   
-  
-  
-  
-  
   df <- tibble(
     "Candidate Score" = candidate_score,
     "Candidate CUI" = candidate_cui,
@@ -59,28 +56,45 @@ head(metamap_output)
 mesh <- read.csv2("mesh.csv", header = T, stringsAsFactors = F)
 names(mesh)[1] <- "specialty"
 mesh <- mesh[, 1:2]
-mesh<-mesh[!duplicated(mesh),]
+mesh <- mesh[!duplicated(mesh),]
 
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
-#numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità 
+#numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
 #medica
 add_specialty <- function(df) {
   terms_list <- as.list(df[[4]])
   
   result <-
     lapply(terms_list, function(x)
-    filter(mesh, terms == x)) %>%
-    do.call("rbind", .) %>%
-    as.tibble(.)
-  names(result)[2] <- "Candidate Preferred"
+      as.tibble(filter(mesh, terms == x)[1])) %>%
+    lapply(., function(df)
+      if (dim(df)[1] == 0)
+        df[1, 1] <- NA
+      else
+        df)
   
-  matching<-(nrow(result)/length(terms_list))*100
   
-  t_specialty <- merge(df, result)
+  result <-
+    mapply(cbind,
+           result,
+           "Candidate Preferred" = terms_list,
+           SIMPLIFY = F)
+  
+  result <- lapply(result, as.tibble) %>%
+    lapply(., setNames, c("Specialty", "Candidate Preferred"))
+  
+  
+  result <- result %>% do.call("rbind", .)
+  #matching<-(nrow(result)/length(terms_list))*100
+  
+  t_specialty <- cbind(df, result) %>%
+    .[, 1:5]
+  
+  
   
   # a<-as.list(t_specialty)
-  return( t_specialty)
+  return(t_specialty)
 }
 
 #applico la funzione all'output di metamap
@@ -95,7 +109,7 @@ a <- pblapply(metamap_output, add_specialty)
 #  TEST
 # mydf <- count(a[[18]], specialty)
 # head(mydf)
-# 
+#
 # mydf.molten <-
 #   melt(
 #     mydf,
@@ -103,11 +117,8 @@ a <- pblapply(metamap_output, add_specialty)
 #     measure.vars = "n"
 #     )
 # head(mydf.molten)
-# 
+#
 # g<-ggplot(mydf.molten,aes(specialty,value))+
 #   geom_col()+
-# 
+#
 # g
-
-
-
