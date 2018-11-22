@@ -6,6 +6,8 @@ library(pbapply)
 library(reshape2)
 library(ggplot2)
 library(data.table)
+
+
 #leggo l'output di metamap
 metaout <- read_html("25_FRA_out.xml")
 
@@ -13,11 +15,9 @@ metaout <- read_html("25_FRA_out.xml")
 mmos <- metaout %>%
   html_nodes("mmo")
 
-mappings <- mmos[2] %>%
-  html_nodes("mapping")
-
 #scrivo la funzione che estrae i dati di interesse per la singola app
 extract_output <- function(x) {
+  
   candidate_score <- x %>%
     html_nodes("candidatescore") %>%
     html_text(trim = F)
@@ -52,6 +52,7 @@ extract_output <- function(x) {
 metamap_output <- pblapply(mmos, extract_output)
 head(metamap_output)
 
+
 #carico il file mesh e lo preparo togliendo duplicati e colonne inutili
 mesh <- read.csv2("mesh.csv", header = T, stringsAsFactors = F)
 names(mesh)[1] <- "specialty"
@@ -63,11 +64,12 @@ mesh <- mesh[!duplicated(mesh),]
 #numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
 #medica
 add_specialty <- function(df) {
+  
   terms_list <- as.list(df[[4]])
   
   result <-
     lapply(terms_list, function(x)
-      as.tibble(filter(mesh, terms == x)[1])) %>%
+      as.tibble(filter(mesh, terms == x)[1]))%>%
     lapply(., function(df)
       if (dim(df)[1] == 0)
         df[1, 1] <- NA
@@ -85,7 +87,8 @@ add_specialty <- function(df) {
     lapply(., setNames, c("Specialty", "Candidate Preferred"))
   
   
-  result <- result %>% do.call("rbind", .)
+  result <- result %>% 
+    do.call("rbind", .)
   #matching<-(nrow(result)/length(terms_list))*100
   
   t_specialty <- cbind(df, result) %>%
@@ -106,7 +109,7 @@ a <- pblapply(metamap_output, add_specialty)
 
 
 
-#  TEST
+#  TEST (da ignorare)
 # mydf <- count(a[[18]], specialty)
 # head(mydf)
 #
