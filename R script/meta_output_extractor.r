@@ -17,7 +17,6 @@ mmos <- metaout %>%
 
 #scrivo la funzione che estrae i dati di interesse per la singola app
 extract_output <- function(x) {
-  
   candidate_score <- x %>%
     html_nodes("candidatescore") %>%
     html_text(trim = F)
@@ -57,24 +56,31 @@ head(metamap_output)
 mesh <- read.csv2("mesh.csv", header = T, stringsAsFactors = F)
 names(mesh)[1] <- "specialty"
 mesh <- mesh[, 1:2]
-mesh <- mesh[!duplicated(mesh),]
+mesh <- mesh[!duplicated(mesh), ]
 
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
 #numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
 #medica
 add_specialty <- function(df) {
-  
   terms_list <- as.list(df[[4]])
   
+  #mmos[[16]]%>%html_nodes("utttext") Prendere le descrizioni
+  
   result <-
+    # lapply(terms_list, function(x)
+    #   as.tibble(filter(mesh, terms == x)[1])) %>%
+    
     lapply(terms_list, function(x)
-      as.tibble(filter(mesh, terms == x)[1]))%>%
-    lapply(., function(df)
-      if (dim(df)[1] == 0)
-        df[1, 1] <- NA
-      else
-        df)
+      as.tibble(mesh[grepl(pattern = x,
+                           x = mesh$terms,
+                           ignore.case = T), 1]))%>%
+  
+  lapply(., function(df)
+    if (dim(df)[1] == 0)
+      df[1, 1] <- NA
+    else
+      df)
   
   
   result <-
@@ -87,7 +93,7 @@ add_specialty <- function(df) {
     lapply(., setNames, c("Specialty", "Candidate Preferred"))
   
   
-  result <- result %>% 
+  result <- result %>%
     do.call("rbind", .)
   #matching<-(nrow(result)/length(terms_list))*100
   
@@ -110,18 +116,15 @@ a <- pblapply(metamap_output, add_specialty)
 
 
 #  TEST (da ignorare)
-# mydf <- count(a[[18]], specialty)
-# head(mydf)
-#
-# mydf.molten <-
-#   melt(
-#     mydf,
-#     id.vars = "specialty",
-#     measure.vars = "n"
-#     )
-# head(mydf.molten)
-#
-# g<-ggplot(mydf.molten,aes(specialty,value))+
-#   geom_col()+
-#
-# g
+mydf <- count(a[[18]], Specialty)
+head(mydf)
+
+mydf.molten <-
+  melt(mydf,
+       id.vars = "Specialty",
+       measure.vars = "n")
+head(mydf.molten)
+
+g <- ggplot(mydf.molten, aes(Specialty, value)) +
+  geom_col()
+g
