@@ -58,23 +58,44 @@ mesh <- read.csv2("mesh.csv", header = T, stringsAsFactors = F)
 names(mesh)[1] <- "specialty"
 mesh <- mesh[, 1:2]
 mesh <- mesh[!duplicated(mesh),]
+mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
 
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
 #numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
 #medica
+
+
 add_specialty <- function(df) {
   
-  terms_list <- as.list(df[[4]])
+  terms_list <- as.list(df[[4]])%>%
+    lapply(., function(term)
+      gsub('[[:punct:] ]+',' ',term))
   
+  #due funzioni di ricerca: la prima ricerca ogni termine in modo "greedy", la seconda è più "fuzzy"
+  
+  #Prima:
+  # result <-
+  #   lapply(terms_list, function(x)
+  #     as.tibble(filter(mesh, terms == x)[1]))%>%
+  #   lapply(., function(df)
+  #     if (dim(df)[1] == 0)
+  #       df[1, 1] <- NA
+  #     else
+  #       df)
+    #  t_specialty <- cbind(df, result) %>%
+  # .[, 1:5]
+  # 
+  
+  #Seconda:
   result <-
     lapply(terms_list, function(x)
-      as.tibble(filter(mesh, terms == x)[1]))%>%
-    lapply(., function(df)
-      if (dim(df)[1] == 0)
-        df[1, 1] <- NA
+      mesh[mesh$terms %like% x, 1]) %>%
+    lapply(., function(chr)
+      if (length(chr) == 0)
+        chr <- NA
       else
-        df)
+        chr)
   
   
   result <-
@@ -91,8 +112,7 @@ add_specialty <- function(df) {
     do.call("rbind", .)
   #matching<-(nrow(result)/length(terms_list))*100
   
-  t_specialty <- cbind(df, result) %>%
-    .[, 1:5]
+  t_specialty <-merge(result,df)
   
   
   
@@ -105,7 +125,15 @@ a <- pblapply(metamap_output, add_specialty)
 
 
 
+#estrazione delle (max 2) specialità mediche
+#funzione da applicare ad ogni elemento della lista a, ovvero una funzione
+#da applicare ad un dataframe
 
+classifier<-function(a.df){
+  count(a.df,Specialty, sort = T)
+}
+
+classified<-pblapply(a, classifier)
 
 
 
