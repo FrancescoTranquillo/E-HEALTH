@@ -74,30 +74,30 @@ add_specialty <- function(df) {
   
   #due funzioni di ricerca: la prima ricerca ogni termine in modo "greedy", la seconda è più "fuzzy"
   
-  #Prima:
-  # result <-
-  #   lapply(terms_list, function(x)
-  #     as.tibble(filter(mesh, terms == x)[1]))%>%
-  #   lapply(., function(df)
-  #     if (dim(df)[1] == 0)
-  #       df[1, 1] <- NA
-  #     else
-  #       df)
-    #  t_specialty <- cbind(df, result) %>%
-  # .[, 1:5]
-  # 
   
-  #Seconda:
   result <-
     lapply(terms_list, function(x)
-      mesh[mesh$terms %like% x, 1]) %>%
-    lapply(., function(chr)
-      if (length(chr) == 0)
-        chr <- NA
+      as.tibble(filter(mesh, terms == x)[1]))%>%
+    lapply(., function(df)
+      if (dim(df)[1] == 0)
+        df[1, 1] <- NA
       else
-        chr)
+        df)
+   t_specialty <- cbind(df, result) %>%
+  .[, 1:5]
+
   
-  
+  #Seconda:
+  # result <-
+  #   lapply(terms_list, function(x)
+  #     mesh[mesh$terms %like% x, 1]) %>%
+  #   lapply(., function(chr)
+  #     if (length(chr) == 0)
+  #       chr <- NA
+  #     else
+  #       chr)
+  # 
+  # 
   result <-
     mapply(cbind,
            result,
@@ -133,8 +133,14 @@ classifier<-function(a.df){
   count(a.df,Specialty, sort = T)
 }
 
-classified<-pblapply(a, classifier)
+classified<-pblapply(a, classifier)%>%
+  lapply(., drop_na)
 
+top3<-classified%>%
+  lapply(., function(x)
+    if(dim(x)[1]>=3)
+      x[1:3, 1]
+    else x[,1])
 
 
 #  TEST (da ignorare)
