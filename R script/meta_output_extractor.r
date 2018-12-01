@@ -143,6 +143,9 @@ top3<-classified%>%
     else x[,1])
 
 
+
+top3
+
 #  TEST (da ignorare)
 # mydf <- count(a[[18]], specialty)
 # head(mydf)
