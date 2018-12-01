@@ -9,7 +9,7 @@ library(data.table)
 
 
 #leggo l'output di metamap
-metaout <- read_html("25_FRA_out.xml")
+metaout <- read_html("Test_metamap.xml")
 
 #lo suddivido per le singole app
 mmos <- metaout %>%
