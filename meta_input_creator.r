@@ -10,7 +10,7 @@ df <- df[,4]
 
 write.table(
   df,
-  "across_specialist.txt",
+  "Across_Specialties.txt",
   append = F,
   dec = ".",
   col.names = F,
