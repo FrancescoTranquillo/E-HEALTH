@@ -1,6 +1,6 @@
 df <-
   read.csv2(
-    "Across_Specialties3.csv",
+    "Across_Specialties_nostro.csv",
     stringsAsFactors = F,
     header = T
   )
@@ -10,7 +10,7 @@ df <- df[,4]
 
 write.table(
   df,
-  "Across_Specialties3.txt",
+  "Across_Specialties_nostro.txt",
   append = F,
   dec = ".",
   col.names = F,
