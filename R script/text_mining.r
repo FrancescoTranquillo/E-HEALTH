@@ -14,15 +14,20 @@ library(gmodels)
 library(viridis)
 
 
-training_test_4 <- read.csv2("train_test_groups.csv", header = T) %>%
+training_test_4 <- read.csv2("train_test_groups.csv", header = T)%>%
   drop_na()
+
+db_tot <- read.csv2("Database_preprocessed_english.csv", header = T)
 
 training_test_4$Description <-
   as.character(training_test_4$Description)
 training_test_4$NC.1.0 <- factor(training_test_4$NC.1.0)
+len<-length(training_test_4$Description)
 
+db$Description<-as.character(db$Description)
 table(training_test_4$NC.1.0)
 
+descriptions<-paste0(training_test_4$Description, db$Description)
 stopwords <- c(stopwords("en"), "app", "can", "use","will","may")
 
 clean_corpus <- function(corpus) {
@@ -30,13 +35,14 @@ clean_corpus <- function(corpus) {
   corpus <- tm_map(corpus, removePunctuation)
   corpus <- tm_map(corpus, content_transformer(tolower))
   corpus <- tm_map(corpus, removeWords, stopwords)
-  #corpus <- tm_map(corpus, removeNumbers)
+  corpus <- tm_map(corpus, stemDocument)
+  corpus <- tm_map(corpus, removeNumbers)
   
 }
 
 #Data preparation – cleaning and standardizing text data####
 
-descr_corpus <- VCorpus(VectorSource(training_test_4$Description))
+descr_corpus <- VCorpus(VectorSource(descriptions))
 
 descr_corpus_clean<-clean_corpus(descr_corpus)
 # descr_corpus_clean<-
@@ -60,18 +66,19 @@ descr_dtm <- DocumentTermMatrix(descr_corpus_clean)
 
 # Data preparation – creating training and test datasets ####
 
-#50% train, 50% test
-perf_v<-NULL
-splices<-seq(0.5, 0.95, by=0.05)
-for(i in splices){
-a <- nrow(descr_dtm) * i
+
+# perf_v<-NULL
+# splices<-seq(0.5, 0.95, by=0.05)
+# for(i in splices){
+# a <- nrow(descr_dtm) * i
+a <- 1341
 b <- a + 1
 descr_train <- descr_dtm[1:a,]
 descr_test <- descr_dtm[b:nrow(descr_dtm),]
-
+#nrow(descr_dtm)
 descr_train_labels <- training_test_4[1:a,]$NC.1.0
-descr_test_labels <-
-  training_test_4[b:nrow(descr_dtm),]$NC.1.0
+#descr_test_labels <-
+  #training_test_4[b:nrow(descr_dtm),]$NC.1.0
 
 
 # # Visualizing text data – word clouds ####
@@ -193,7 +200,8 @@ descr_test_labels <-
 # # Data preparation – creating indicator features for
 # frequent words ####
 
-descr_freq_words <- findFreqTerms(descr_train,lowfreq = 68)
+
+descr_freq_words <- findFreqTerms(descr_train,lowfreq = 200)
 
 descr_dtm_freq_train <- descr_train[, descr_freq_words]
 descr_dtm_freq_test <- descr_test[, descr_freq_words]
@@ -211,80 +219,82 @@ descr_classifier2 <-
 
 descr_test_pred2 <- predict(descr_classifier2, descr_test)
 
-confusionMatrix(descr_test_pred2, descr_test_labels,
-                positive = "0")
+#db2<-tibble("ID"=db$ID[1:6159], "Description"=db$Description[1:6159], "NC"=descr_test_pred2)
 
-
-#obtain predicted probabilities
-descr_test_prob <-
-  predict(descr_classifier2, descr_test, type = "raw")
-
-#combine the results in a df
-descr_results <- data.frame(
-  actual_type = descr_test_labels,
-  predict_type = descr_test_pred2,
-  prob_1 = round(descr_test_prob[, 2], 5),
-  prob_0 = round(descr_test_prob[, 1], 5)
-)
-
-#write.csv(descr_results, "descr_results.csv", row.names = F)
-
-#Confusion matrix #2
-confusionMatrix(descr_results$predict_type,
-                descr_results$actual_type,
-                positive = "0")
-
-#ROC
-pred <- prediction(descr_results$prob_1, descr_results$actual_type)
-
-perf <- performance(pred, measure = "tpr", x.measure = "fpr")
-perf_v<-c(perf_v, perf)
-#Area Under the Curve AUC
-# calculate AUC
-perf.auc <- performance(pred, measure = "auc")
-str(perf.auc)
-unlist(perf.auc@y.values)
-
-
-plot(perf,
-     main = paste("ROC curve for medical content","\n",i*100,"% train set", "\n AUC: ", round(unlist(perf.auc@y.values),digits = 2)),
-     col = rgb(red = 0, green = 0, blue = 1, alpha = i),
-     
-     lwd = 2)
-
-abline(a = 0,
-       b = 1,
-       lwd = 2,
-       lty = 2)
-
-}
-
-
-
-
-cols<-viridis_pal(option = "D")(11)
-for(i in 1:length(perf_v)){
-  par(new=TRUE)
- 
-  plot(perf_v[[i]],
-       main = "ROC for different percentages of train test size",
-       col =  cols[11-i] ,
-       lwd = 2
-         )
-  
-}
-
-# container = create_container(descr_dtm, training_test_4$NC.1.0, 
-#                              trainSize = 1:1005, testSize = 1006:1341, 
-#                              virgin = FALSE)
+# confusionMatrix(descr_test_pred2, descr_test_labels,
+#                 positive = "0")
 # 
 # 
-# descr_model <- train_model(container, algorithm ="SVM")
+# #obtain predicted probabilities
+# descr_test_prob <-
+#   predict(descr_classifier2, descr_test, type = "raw")
+# 
+# #combine the results in a df
+# descr_results <- data.frame(
+#   actual_type = descr_test_labels,
+#   predict_type = descr_test_pred2,
+#   prob_1 = round(descr_test_prob[, 2], 5),
+#   prob_0 = round(descr_test_prob[, 1], 5)
+# )
+# 
+# #write.csv(descr_results, "descr_results.csv", row.names = F)
+# 
+# #Confusion matrix #2
+# confusionMatrix(descr_results$predict_type,
+#                 descr_results$actual_type,
+#                 positive = "0")
+# 
+# #ROC
+# pred <- prediction(descr_results$prob_1, descr_results$actual_type)
+# 
+# perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+# perf_v<-c(perf_v, perf)
+# #Area Under the Curve AUC
+# # calculate AUC
+# perf.auc <- performance(pred, measure = "auc")
+# str(perf.auc)
+# unlist(perf.auc@y.values)
 # 
 # 
-# descr_model_result <- classify_model(container, descr_model)
-# table( training_test_4$NC.1.0[1006:1341], descr_model_result[,"SVM_label"])
+# plot(perf,
+#      main = paste("ROC curve for medical content","\n",i*100,"% train set", "\n AUC: ", round(unlist(perf.auc@y.values),digits = 2)),
+#      col = rgb(red = 0, green = 0, blue = 1, alpha = i),
+#      
+#      lwd = 2)
 # 
-# analytics = create_analytics(container, descr_model_result)
-# summary(analytics)
+# abline(a = 0,
+#        b = 1,
+#        lwd = 2,
+#        lty = 2)
+# 
+# #}
+# 
+# 
+# 
+# 
+# cols<-viridis_pal(option = "D")(11)
+# for(i in 1:length(perf_v)){
+#   par(new=TRUE)
+#  
+#   plot(perf_v[[i]],
+#        main = "ROC for different percentages of train test size",
+#        col =  cols[11-i] ,
+#        lwd = 2
+#          )
+#   
+# }
+# 
+# # container = create_container(descr_dtm, training_test_4$NC.1.0, 
+# #                              trainSize = 1:1005, testSize = 1006:1341, 
+# #                              virgin = FALSE)
+# # 
+# # 
+# # descr_model <- train_model(container, algorithm ="SVM")
+# # 
+# # 
+# # descr_model_result <- classify_model(container, descr_model)
+# # table( training_test_4$NC.1.0[1006:1341], descr_model_result[,"SVM_label"])
+# # 
+# # analytics = create_analytics(container, descr_model_result)
+# # summary(analytics)
 
