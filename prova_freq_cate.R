@@ -7,6 +7,8 @@ library(pbapply)
 library(reshape2)
 library(ggplot2)
 library(data.table)
+library(tm)
+library(SnowballC)
 
 
 #leggo l'output di metamap
@@ -30,27 +32,34 @@ df1_sub<-df1 %>% filter(freq >= 10)
 #SECONDO METODO
 rm(list = ls())
 
-library(rvest)
-library(tidyverse)
-library(tm)
+training_test_4<-read.csv2("Across_Specialties.csv",header = T)
+training_test_4$Description <-
+  as.character(training_test_4$Description)
 
-training_test_4<-read.csv2("Across_Specialties3.csv",header = T)
+corpus <- Corpus(VectorSource(training_test_4$Description[1:429]))
 
-corpus <- Corpus(VectorSource(training_test_4))
+stopwords <- c(stopwords("en"), "app", "can", "use","will","may")
 
-skipWords <- function(x) removeWords(x, stopwords("english"))
-funcs <- list(tolower, removePunctuation, removeNumbers, stripWhitespace, skipWords)
-a <- tm_map(corpus, FUN = tm_reduce, tmFuns = funcs)
-a.dtm1 <- TermDocumentMatrix(a, control = list(wordLengths = c(3,10))) 
+clean_corpus <- function(corpus) {
+  corpus <- tm_map(corpus, stripWhitespace)
+  corpus <- tm_map(corpus, removePunctuation)
+  corpus <- tm_map(corpus, content_transformer(tolower))
+  corpus <- tm_map(corpus, removeWords, stopwords)
+  #corpus <- tm_map(corpus, removeNumbers)
+  
+}
 
-findFreqTerms(a.dtm1,2)
+corpus_clean<-clean_corpus(corpus)
 
-m <- as.matrix(a.dtm1)
-v <- sort(rowSums(m), decreasing=TRUE)
-head(v, N)
+corpus_tdm<-TermDocumentMatrix(corpus_clean)
+m <- as.matrix(corpus_tdm)
+v <- sort(rowSums(m), decreasing=T)
+v[1:50]
 
+barplot(v[1:30], col = "tomato", las = 2,horiz = T)
 t4_train<-training_test_4[which(training_test_4$X=="Test"),c(4)]
 
 N<-matrix(t4_train);
 
 descr_freq_words<-findFreqTerms(N,lowfreq = 0, highfreq = Inf)
+
