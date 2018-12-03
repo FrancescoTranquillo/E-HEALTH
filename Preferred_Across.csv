@@ -1,0 +1,841 @@
+"Candidate_Preferred";"freq"
+"% of total";10
+"% release (qualifier value)";18
+"/40";1258
+"1+";11
+"1+ Score";11
+"1+ Score, WHO";11
+"10%";26
+"2-Mercaptoethanesulfonic Acid";117
+"20%";2496
+"24 hour time frame";18
+"24 Hours";18
+"2alpha,3beta,19alpha-trihydroxyurs-12-en";15
+"3 Days";18
+"30%";2509
+"300";20
+"40%";1258
+"60%";2496
+"900";10
+"Ability";18
+"Able (finding)";10
+"Abnormally high";66
+"About Your Medicines";20
+"Absent second heart sound, S>2<";12
+"Access";79
+"Account number:Identifier:Point in time:^Patient:Nominal";39
+"Accurate (qualifier)";34
+"Act Class - review";83
+"Active";14
+"Activities";34
+"Additional";10
+"Administration procedure";16
+"Advance";92
+"Advance -- medical device";92
+"Advice";25
+"Aim";17
+"Aim (idea)";17
+"AKR1A1 wt Allele";560
+"allowing";40
+"Alveolar rhabdomyosarcoma";560
+"Ambulance, not otherwise specified";48
+"Ambulances";60
+"Anatomic Site";11
+"Ancestry-Informative Marker";17
+"Anesthesia Code";192
+"Anesthesia procedures";576
+"Anesthesia substance";576
+"Anesthesiology";576
+"Annotations";12
+"Antimicrobial Intermediate Susceptibility Result";12
+"Application (Document)";89
+"Application Dosing Unit";89
+"Application procedure";93
+"Apply";99
+"apply - action";10
+"Apply (administration method)";10
+"Apply (instruction)";10
+"Appointments";13
+"Area";17
+"Areas <moth>";13
+"Arm position finding";160
+"Array Feature";52
+"artesunate";16
+"Articular system";12
+"aspects of laws";31
+"Assessed";24
+"Assisted (qualifier value)";60
+"Assortment";50
+"Athletes";16
+"Australia";17
+"Auto";15
+"Availability of";14
+"Bale out";35
+"Base - General Qualifier";26
+"Basis - conceptual entity";28
+"Before";79
+"Before values";23
+"Behavior Rating Inventory of Executive Function";63
+"benefit";21
+"Better";17
+"Better than Others";13
+"Bibliographic Reference";35
+"Biochemistry";17
+"Biologic Development";13
+"Biomaterial Treatment";16
+"Biomechanical compliance";630
+"Biospecimen";14
+"Blood Products Laboratory Testing";50
+"Body tissue";25
+"bony process";10
+"bookmark";18
+"Bottom";24
+"Brain Concussion";41
+"Breast Feeding";24
+"Brief";63
+"Button";10
+"buying";47
+"Calculation";11
+"Call (Instruction)";28
+"Canada";57
+"Card (document)";160
+"Cardiac Stem Cell";28
+"care activity";32
+"Carson Indians";15
+"CASP8AP2 wt Allele";82
+"CD5L wt Allele";17
+"CD69 protein, human";17
+"CD69 wt Allele";17
+"CDISC SEND Study Design Terminology";13
+"Cells";11
+"Central";33
+"Certification";24
+"chapter";40
+"Characteristics";52
+"Check";29
+"Checking (action)";30
+"Cheque";26
+"Choline O-Acetyltransferase, human";18
+"Choose (action)";43
+"Choroid Plexus Carcinoma";28
+"CHPT1 gene";624
+"CHPT1 wt Allele";624
+"Clinical";162
+"Clinical act of insertion";20
+"Clinical Batch";162
+"Clinical Coding";24
+"Clinical Trial Insurance Documentation";24
+"Clinical Trials, Monitoring";14
+"Clinical/Radiologic";21
+"Clinician";43
+"Clipperton Island";624
+"Cloudy";15
+"Cluttering";24
+"Coder Device Component";12
+"Coding";783
+"Coding Subtest (WAIS-IV)";780
+"Coding Subtest (WISC-V)";780
+"Cognitive";16
+"college teachers";10
+"combination - answer to question";14
+"combination of objects";14
+"Combined";17
+"Comment";15
+"Comment Domain";15
+"Commit Lozenge";10
+"Commit Operation";12
+"Communication";22
+"Communication Contact";10
+"COMP wt Allele";12
+"Company (organization)";131
+"Compleat Liquid Nutrition";19
+"Complete";43
+"Complete Agreement";21
+"Complete Pharyngeal Contraction";21
+"Completely Able";21
+"Compliance";630
+"Compliance behavior";641
+"Compliant (qualifier value)";10
+"Comprehension";11
+"Comprehensive";13
+"Comprehensive Score for Financial Toxicity";50
+"Computer software";14
+"Concept Generality - Leaf";10
+"Concept model range (foundation metadata concept)";88
+"Condition";27
+"Condition:Find:Pt:^Patient:Nom";27
+"Connection";35
+"Connectivity";16
+"Consortium or Network";37
+"Consultation";38
+"contact person";10
+"Contact with";18
+"Container status - Identified";27
+"Contents";117
+"Convenient";19
+"Copying Processes";11
+"Cost aspects";50
+"Count of entities";10
+"Cover - action";17
+"Covered (qualifier value)";31
+"Covers (device)";24
+"Create data operation";11
+"Creation";12
+"Current (present time)";41
+"Customer";14
+"Daily";15
+"Data";46
+"Data (eukaryote)";46
+"Data call receiving device";46
+"Data operation - complete";21
+"Decision";42
+"Deep (qualifier value)";10
+"Demand (clinical)";14
+"dendritic shaft";600
+"Dental anesthesia";576
+"Deoxyribonucleic Acid Measurement";12
+"Description";195
+"Design";13
+"detail - Response Level";19
+"Details";47
+"Development";13
+"development aspects";13
+"Development Batch";13
+"device aspects";10
+"Device Component System";15
+"Device System Testing Evaluation Method";12
+"Devices";16
+"Diagnostic radiologic examination";68
+"Different";55
+"Digital Radiography";56
+"Direct (qualifier)";18
+"Discharge (release)";18
+"Discipline of Nursing";24
+"Disease";42
+"Disease classification level";11
+"Disease Response";29
+"DNA";14
+"DNA Integration";11
+"Doctor - Title";39
+"Done (qualifier value)";17
+"Double Value Type";16
+"Doubling";16
+"Due to";10
+"Duplicate";16
+"Easy";145
+"Economic demand";14
+"Education, Medical";36
+"Educational aspects";18
+"Educational process of instructing";27
+"Educational Status";18
+"Elder extract";10
+"Electrical Current";41
+"Electrocardiogram: right bundle branch block";12
+"Electrolyte [EPC]";16
+"Electrolytes";16
+"Emergencies [Disease/Finding]";41
+"Emergency Situation";41
+"Empowered";12
+"Empty (qualifier)";19
+"End";37
+"Entity Determiner - specific";1224
+"Environment";37
+"Essential";11
+"etc.";12
+"Evaluation and management note:Finding:Point in time:{Setting}:Document:{Provider}";37
+"Evaluation procedure";32
+"Event";12
+"Evidence";10
+"Exam";142
+"Examination";10
+"Exclusive";17
+"Experience";101
+"Experimental Result";15
+"EXTL3 wt Allele";20
+"F8 wt Allele";24
+"Facility";100
+"Factor VIII";24
+"factor VIII, human";24
+"Family";10
+"Family (taxonomic)";10
+"Fasting";15
+"Fasting Status Indicator";15
+"Feature";52
+"Feeling content";116
+"Feet, unit of measurement";1200
+"Field";58
+"Field's stain";58
+"Financial Account";39
+"Financial cost";51
+"Finding";12
+"First (number)";12
+"Firstly";14
+"Flash";82
+"Floor - story of building";11
+"Focal";15
+"Foot";1200
+"Force Field";58
+"Forearm";10
+"Free (available (qualifier))";19
+"Free of (attribute)";19
+"Fulfill";65
+"Full";42
+"funding grant";10
+"general population";140
+"Genomic Orientation";35
+"Georgia, Western Asia";16
+"Good";16
+"GORAB gene";25
+"Greater than one";11
+"Group testing method";16
+"guidance - Measure Attribute";18
+"Guideline [Publication Type]";847
+"Guidelines";847
+"guiding characteristics";847
+"Gynecology";10
+"Has focus";15
+"Hay fever";17
+"Head";1040
+"Head - Component of Device";1040
+"Head position finding";320
+"Health";115
+"Health Care";26
+"Health Insurance Portability and Accountability Act";33
+"Health Personnel";19
+"Healthcare Common Procedure Coding System";16
+"Heart";19
+"Heart Sounds";72
+"Heart sounds:Find:Pt:Heart:Nom";72
+"Help document";33
+"Helping Behavior";20
+"High";75
+"high - ActExposureLevelCode";66
+"High Level";66
+"High Mitosis-Karyorrhexis Index";66
+"HL7PublishingSubSection <practice>";52
+"Hollow visceral neuropathy";18
+"Home environment";19
+"Horizontal";2400
+"Hospital Medicine";15
+"Hospitals";11
+"Host Cell";10
+"Hour";34
+"HTTP";10
+"Human Cells, Tissues, and Cellular and Tissue-Based Products Processing";10
+"human REG1A protein";20
+"Human Study Subject";22
+"Hypertensive disease";18
+"Identified";27
+"Image Feature";52
+"Importance Rating Score 0";98
+"Important";98
+"Improving (qualifier value)";10
+"Impulse Oscillometry";12
+"In addition to";10
+"In the Field";65
+"include - SetOperator";17
+"Include (action)";17
+"Including (qualifier)";42
+"Increase";11
+"Increased";11
+"Independence";26
+"Independent for Transfer";26
+"Independently able";26
+"Indication of (contextual qualifier)";11
+"Individual";34
+"Infantile Neuroaxonal Dystrophy";131
+"Information";114
+"Innocent Murmurs";24
+"innovativeness";18
+"Insert (object)";16
+"Insert (solid dose form)";16
+"Institutes";17
+"Institution (social concept)";21
+"Insurance";24
+"Integration (data processing)";11
+"Inter";48
+"Interested";18
+"Intermediate";60
+"Intermediate Mitosis-Karyorrhexis Index";12
+"Internet";132
+"Interventional radiologic procedures";28
+"Interventional radiology";28
+"Intravascular line";29
+"Investigative Subject";22
+"Io satellite";12
+"IPSS Risk Category High";66
+"IPSS Risk Category Low";37
+"Issue (document)";23
+"Joule, Unit of energy";21
+"Journal";54
+"KIDINS220 gene";560
+"Knowledge";19
+"Knowledge acquisition";25
+"Knowledge Field";60
+"Korean race";17
+"Laboratory";121
+"Laboratory domain";68
+"Laboratory observation";68
+"Laboratory Procedures";61
+"Late";132
+"Law - Document";31
+"Law Profession";31
+"Learning";16
+"Leg";2400
+"Legal system";31
+"Level";11
+"Level 1";16
+"Levels (qualifier value)";17
+"Life";11
+"Light Sources, Flash";82
+"Line Specimen";29
+"Line Unit of Length";29
+"Linear";29
+"Lingual - Oral site descriptor";24
+"Lipid R1 MRI";24
+"Lipids";34
+"List";12
+"Location";13
+"Location of Oral Residue Following Swallowing";11
+"Location of Pharyngeal Residue Following Swallowing";11
+"Logical Condition";27
+"low";37
+"low confidentiality";37
+"low exposure";37
+"Low Level";37
+"Low Mitosis-Karyorrhexis Index";37
+"M NOS ANTIBODY";13
+"M+ (tumor staging)";13
+"Magnetic Resonance Imaging";56
+"Main";14
+"Major";10
+"Major <insect>";10
+"Make - Instruction Imperative";20
+"Management procedure";11
+"Mandatory Testing";56
+"Manufactured form";11
+"Master";81
+"Materials";141
+"Medical";255
+"Medical Coding Process Document";24
+"Medical Devices";20
+"Medical Examination";184
+"Medical service";255
+"Medical Specialities";53
+"medication - HL7 publishing domain";21
+"Medicine";38
+"Medicine--Practice";12
+"MEMO1 gene";12
+"message";12
+"Metabolite";16
+"Microplate Well";15
+"Mobile";24
+"Mobile Applications";12
+"Mode";18
+"Model";2407
+"Module";36
+"Module (core metadata concept)";36
+"Modus";30
+"Monitoring - action";14
+"Monograph";16
+"More";78
+"Most";208
+"Multiple Chronic Conditions";24
+"NAA50 gene";11
+"Name";13
+"Name (property) (qualifier value)";13
+"Needs";31
+"Negation";34
+"Network";40
+"Network Device Component";37
+"New";48
+"NIH Clinical Center";12
+"Nine";12
+"Note (document)";56
+"Now (temporal qualifier)";41
+"Nucleic Acid Strand";35
+"Nucleic Acids";20
+"Numerous";53
+"Nurses";15
+"nursing therapy";26
+"Observation Interpretation - intermediate";12
+"Office";40
+"Official";21
+"Offspring";12
+"On (qualifier value)";15
+"One";28
+"Only - dosing instruction fragment";86
+"Ontario";14
+"Open";18
+"Operational Compliance";630
+"Order (action)";22
+"Order (arrangement)";22
+"Order (document)";18
+"Order (record artifact)";18
+"Order (taxonomic)";18
+"organ donor";16
+"Organ donor:Type:Point in time:^Donor:Nominal";16
+"Organization administrative structures";13
+"organizational";13
+"Organized";13
+"Original";23
+"Original Regulatory Submission";23
+"Orthopedics";26
+"Other Toxicity Studies: Metabolites";16
+"Out (direction)";43
+"Page (document)";14
+"Paper";77
+"Paper Authorization";13
+"Patient Discharge";18
+"Patient Information";25
+"Patient Information:-:Point in time:^Patient:-";25
+"Patient need for (contextual qualifier)";31
+"Patient Visit";11
+"Patient_s Relationship to Insured - Organ donor";16
+"Patients";151
+"per 24 hours";18
+"per period (qualifier value)";35
+"percent positive cells";481
+"Period (temporal qualifier)";35
+"Permutation";18
+"Person Name";13
+"Personal Contact";13
+"Personal priorities";12
+"Personalized";11
+"Persons";38
+"PET Scanner 3D Mode";18
+"Pharmaceutical Preparations";110
+"Pharmaceutical Services";78
+"Pharmacist";12
+"Pharmacologic Substance";52
+"Pharmacy (field)";77
+"Pharmacy domain";77
+"Pharmacy facility";79
+"photograph";13
+"photoreactivating enzyme activity";23
+"Physicians";89
+"Picture";15
+"PITRM1 gene";51
+"PITRM1 wt Allele";51
+"Place";16
+"Place - dosing instruction imperative";16
+"Placement action";16
+"Planned";133
+"Plant Leaves";10
+"Population Mode";18
+"Positioning - therapy";640
+"Positioning Attribute";640
+"Positioning patient (procedure)";640
+"Positive";481
+"Positive Charge";481
+"Positive Finding";481
+"Positive Number";481
+"Possible";15
+"Possible diagnosis";15
+"Possibly Related to Intervention";15
+"Postoperative monitoring";12
+"potential";10
+"Practice Experience";155
+"Practitioner";12
+"Pre-release version of a computer program";17
+"Pre-study";15
+"Precursor B-cell lymphoblastic leukemia";21
+"PREP gene";51
+"Preparation";74
+"Present";65
+"Presentation";20
+"Preventive monitoring";19
+"Primary";15
+"Priority";12
+"Privacy";56
+"Private";13
+"Private Room";13
+"Problem";23
+"Process";10
+"Process (qualifier value)";10
+"product";38
+"Productivity";18
+"Professional Occupation";12
+"professional occupation status";26
+"Professional Organization or Group";13
+"Progress";15
+"Project";39
+"Protection";56
+"Provide (product)";12
+"Provider";19
+"Providing (action)";52
+"PSA Level Ten to Fifty";2496
+"PSMD2 gene";39
+"Psychological Transfer";15
+"Publications";12
+"Published Comment";23
+"Publishing";14
+"Pure Spanish horse breed (organism)";23
+"Purpose";24
+"put - instruction imperative";16
+"Qualitative form";11
+"Quality";173
+"Quality of Health Care";28
+"Question (inquiry)";147
+"Rab GTPase binding";10
+"Radiographic imaging procedure";68
+"Radiology Specialty";60
+"Radiology studies";60
+"Radionuclide Imaging";17
+"Range";88
+"Range of motion exercise";12
+"Range of Motion, Articular";12
+"Rapid";132
+"Reading (activity)";35
+"Reading (datum presentation)";35
+"Reading Ability question";33
+"Real Time";18
+"Recent";60
+"reference group";28
+"Reference Object";35
+"refill";60
+"REG1A gene";20
+"REG1A wt Allele";20
+"Regulatory Application";89
+"Relate - vinyl resin";12
+"Related personal status";81
+"Related to Cancer";14
+"Relationships";83
+"Release - action (qualifier value)";18
+"Release (procedure)";18
+"Release Determination";18
+"Released (action)";18
+"Removed";44
+"Replication Competent Retrovirus";10
+"Report (document)";10
+"Reported Term";14
+"Reporting";11
+"Request - action";37
+"Requirement";11
+"research quality";42
+"Respiratory Domain";20
+"Response (communication)";29
+"Response (statement)";47
+"Response process";29
+"Result";24
+"Retinol equivalents";20
+"Review [Publication Type]";113
+"Reviewing";28
+"Ribonucleic Acid Measurement";26
+"Right";60
+"Right sided";60
+"Rn";116
+"RNA";26
+"RNA-directed DNA polymerase activity";18
+"RNF31 gene";16
+"Role Class - access";76
+"Room of building - Study";33
+"RPS2 gene";39
+"RPS2 wt Allele";39
+"Rugby";14
+"Rules of conduct";31
+"S1";79
+"S2";39
+"S2 innervation";39
+"Saint Martin, French";116
+"Sambucus";10
+"Same";10
+"Sample Mode";18
+"Sample Range";88
+"Scanning";17
+"scenario";12
+"Schools, Nursing";22
+"Scientific Equipment";31
+"Scientific Publication";12
+"SCRIB protein, human";12
+"Search - action";30
+"search - EntityNameUse";30
+"Seating";2400
+"Section - Geographic Area";27
+"Section (object)";27
+"section sample";27
+"Sectioning technique";27
+"Secure - resin cement";15
+"Secure feeling";15
+"Security - service";15
+"Senior - Suffix";12
+"sensor (device)";12
+"Sensor Device Component";12
+"Separate";18
+"Sequence Data Type";12
+"Sequence of Planned Assessment Schedule";18
+"Series";1248
+"Series - set of composite instances";1248
+"Services";25
+"set (group)";10
+"Set (Psychology)";10
+"Set scale";10
+"Severe (severity modifier)";14
+"Sex Differentiation Disorders";160
+"SH2D3C wt Allele";18
+"Sharing (Social Behavior)";20
+"Shell - Animal skin appendage";2400
+"Shortened";63
+"Singular";172
+"size";74
+"Social Networks";38
+"Societies, Medical";12
+"Sole of Foot";2400
+"Sound - physical agent";13
+"Source";14
+"Source (property) (qualifier value)";14
+"Source of information";10
+"Spatial guidance for medical procedure";18
+"Special care (attribute)";12
+"Special Care (pharmacologic substance)";12
+"Specific qualifier value";1224
+"Specimen";14
+"spelling";16
+"Splitting";15
+"Splitting sensation";12
+"Square Mile";27
+"Standard (document)";42
+"Standard (qualifier)";42
+"standards characteristics";44
+"Standby";97
+"Stat (do immediately)";14
+"Statistical Mode";18
+"status - In progress";15
+"Step (specific stage)";10
+"Step Unit of Distance";10
+"Stop (qualifier value)";37
+"Storage";12
+"strategy";13
+"Strong";101
+"structure";26
+"student";28
+"Study";33
+"Study Guide";21
+"Study Subject";22
+"Subject - topic";22
+"Subject -direct target";22
+"subscriber";129
+"Substance Use Domain";13
+"Sudan";13
+"Support, device";10
+"Supportive assistance";10
+"Symptoms";27
+"Symptoms aspect";26
+"System";15
+"System - kit";15
+"System (unit of presentation)";15
+"systemic administration";12
+"SYSTOLIC EJECTION MURMUR";44
+"TableCellVerticalAlign - bottom";24
+"Take";16
+"Technology";49
+"TelecommunicationCapabilities <voice>";16
+"Telephone Device Component";16
+"Telephone Number";17
+"Term (lexical)";19
+"Term (temporal)";14
+"Term Birth";14
+"Term Source";14
+"Test - temporal region";50
+"Test conditions";189
+"Test Preparation";60
+"Test request";27
+"Test Result";50
+"Test Taking Skills";10
+"Testicular Cancer Serum Markers Test Result S1";79
+"Testicular Cancer Serum Markers Test Result S2";39
+"Testing";52
+"Tests (qualifier value)";59
+"Text";28
+"Text - MDFAttributeType";28
+"Text (foundation metadata concept)";28
+"Text Line";28
+"Textbooks";33
+"therapeutic aspects";17
+"Therapeutic procedure";23
+"therapeutic suggestion";10
+"Three";24
+"Three-dimensional";28
+"Time";37
+"Time (foundation metadata concept)";35
+"Tissue Specimen Code";25
+"To";169
+"Togo";169
+"Tongue";24
+"Tool, device (physical object)";29
+"Top (position)";61
+"topic - ActClassContainer";20
+"Topical Route of Drug Administration";20
+"Total";10
+"tourist";12
+"Transaction counts and value totals - provider";17
+"Transection (procedure)";27
+"Transfer Ability";15
+"Transfer Technique";24
+"transfers";96
+"Transient Population Group";13
+"Transitory";13
+"Traverse";20
+"Treating";21
+"treatment - ActInformationManagementReason";16
+"Treatment Epoch";16
+"Treatment Plan";132
+"Trunk of elephant";600
+"Trunk of plant";600
+"Trunk structure";600
+"Trust (Social Behavior)";51
+"Tryptophanase";169
+"Type - attribute";12
+"U2AF1 wt Allele";116
+"Ultrasonography";28
+"Unique";20
+"United States Military Commissioned Officer O3";624
+"United States Military Commissioned Officer O4";10
+"United States Military enlisted E1";13
+"Unmarried";86
+"Unmarried person";86
+"Update";25
+"Upon - dosing instruction fragment";15
+"Upper arm";560
+"Upward";25
+"Usage";32
+"Use - dosing instruction imperative";27
+"Use of";38
+"use of ultrasonography";28
+"Used by";14
+"user - Facility type";13
+"user - individual";29
+"utilization qualifier";27
+"Vaccination";16
+"Value Above Reference Range";66
+"Variety (taxon)";50
+"various allergen extracts";18
+"various antiinfectives and antiseptics for local oral treatment";18
+"various antiseptic throat preparations";18
+"VARIOUS DRUG CLASSES IN ATC";18
+"various other agents for local oral treatment in ATC";18
+"various other intestinal adsorbents in ATC";18
+"various other nasal preparations in ATC";18
+"Various patch test substance";18
+"Video-conference";17
+"Video Media";26
+"videocassette";31
+"Videoconference";17
+"View";11
+"Viewer Device Component";15
+"Vision";10
+"Visit";10
+"Voice";16
+"Voice G-code";16
+"Volume";18
+"Wealthy";14
+"Well";15
+"What subject filter - Result";15
+"Whole Blood or Product Preparation";17
+"Work";11
+"World";15
+"Write - language ability";12
+"Writing (function)";12
+"Writing (occupation or discipline)";12
+"X-Ray Computed Tomography";56
+"year";17
