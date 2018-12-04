@@ -66,14 +66,63 @@ mesh<-mesh[!duplicated(mesh),]
 #numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità 
 #medica
 add_specialty <- function(df) {
+<<<<<<< HEAD
   terms_list <- as.list(df[[4]])
+=======
   
+  terms_list <- as.list(df[[4]])%>%
+    lapply(., function(term)
+      gsub('[[:punct:] ]+',' ',term))
+  
+  #due funzioni di ricerca: la prima ricerca ogni termine in modo "greedy", la seconda è più "fuzzy"
+  
+  #Prima:
+  # result <-
+  #   lapply(terms_list, function(x)
+  #     as.tibble(filter(mesh, terms == x)[1]))%>%
+  #   lapply(., function(df)
+  #     if (dim(df)[1] == 0)
+  #       df[1, 1] <- NA
+  #     else
+  #       df)
+    #  t_specialty <- cbind(df, result) %>%
+  # .[, 1:5]
+  # 
+>>>>>>> parent of dd153c5... ricerca "greedy" ed estrazione top 3
+  
+  #Seconda:
   result <-
     lapply(terms_list, function(x)
+<<<<<<< HEAD
     filter(mesh, terms == x)) %>%
     do.call("rbind", .) %>%
     as.tibble(.)
   names(result)[2] <- "Candidate Preferred"
+=======
+      mesh[mesh$terms %like% x, 1]) %>%
+    lapply(., function(chr)
+      if (length(chr) == 0)
+        chr <- NA
+      else
+        chr)
+  
+  
+  result <-
+    mapply(cbind,
+           result,
+           "Candidate Preferred" = terms_list,
+           SIMPLIFY = F)
+  
+  result <- lapply(result, as.tibble) %>%
+    lapply(., setNames, c("Specialty", "Candidate Preferred"))
+  
+  
+  result <- result %>% 
+    do.call("rbind", .)
+  #matching<-(nrow(result)/length(terms_list))*100
+  
+  t_specialty <-merge(result,df)
+>>>>>>> parent of dd153c5... ricerca "greedy" ed estrazione top 3
   
   matching<-(nrow(result)/length(terms_list))*100
   
@@ -89,6 +138,10 @@ a <- pblapply(metamap_output, add_specialty)
 
 
 
+<<<<<<< HEAD
+=======
+classified<-pblapply(a, classifier)
+>>>>>>> parent of dd153c5... ricerca "greedy" ed estrazione top 3
 
 
 
