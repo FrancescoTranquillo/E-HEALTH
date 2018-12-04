@@ -9,7 +9,7 @@ library(data.table)
 library(plyr)
 
 #leggo l'output di metamap
-metaout <- read_html("Across_nostro_out.xml")
+metaout <- read_html("Across_classe.xml")
 
 candidate_preferred <- metaout %>%
   html_nodes("candidatepreferred") %>%
@@ -21,6 +21,6 @@ df <- tibble(
 
 df1 <- count(df, "Candidate_Preferred")
 
-df1_sub<-df1 %>% filter(freq >= 10)
 
-write.csv2(df1_sub, "Preferred_Across.csv", row.names = FALSE) #da sistemare per prelevare solo colonna con i preferred o meno
+
+write.csv2(df1, "Preferred_Across_classe.csv", row.names = FALSE) #da sistemare per prelevare solo colonna con i preferred o meno
