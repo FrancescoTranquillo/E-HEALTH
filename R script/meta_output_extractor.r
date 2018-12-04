@@ -5,6 +5,9 @@ library(tidyverse)
 library(pbapply)
 library(reshape2)
 library(ggplot2)
+library(data.table)
+
+
 #leggo l'output di metamap
 metaout <- read_html("25_FRA_out.xml")
 
@@ -12,11 +15,9 @@ metaout <- read_html("25_FRA_out.xml")
 mmos <- metaout %>%
   html_nodes("mmo")
 
-mappings <- mmos[2] %>%
-  html_nodes("mapping")
-
 #scrivo la funzione che estrae i dati di interesse per la singola app
 extract_output <- function(x) {
+  
   candidate_score <- x %>%
     html_nodes("candidatescore") %>%
     html_text(trim = F)
@@ -37,10 +38,6 @@ extract_output <- function(x) {
     html_nodes("matchedword") %>%
     html_text(trim = F)
   
-  
-  
-  
-  
   df <- tibble(
     "Candidate Score" = candidate_score,
     "Candidate CUI" = candidate_cui,
@@ -55,20 +52,21 @@ extract_output <- function(x) {
 metamap_output <- pblapply(mmos, extract_output)
 head(metamap_output)
 
+
 #carico il file mesh e lo preparo togliendo duplicati e colonne inutili
 mesh <- read.csv2("mesh.csv", header = T, stringsAsFactors = F)
 names(mesh)[1] <- "specialty"
 mesh <- mesh[, 1:2]
-mesh<-mesh[!duplicated(mesh),]
+mesh <- mesh[!duplicated(mesh),]
+mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
 
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
-#numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità 
+#numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
 #medica
+
+
 add_specialty <- function(df) {
-<<<<<<< HEAD
-  terms_list <- as.list(df[[4]])
-=======
   
   terms_list <- as.list(df[[4]])%>%
     lapply(., function(term)
@@ -76,37 +74,30 @@ add_specialty <- function(df) {
   
   #due funzioni di ricerca: la prima ricerca ogni termine in modo "greedy", la seconda è più "fuzzy"
   
-  #Prima:
-  # result <-
-  #   lapply(terms_list, function(x)
-  #     as.tibble(filter(mesh, terms == x)[1]))%>%
-  #   lapply(., function(df)
-  #     if (dim(df)[1] == 0)
-  #       df[1, 1] <- NA
-  #     else
-  #       df)
-    #  t_specialty <- cbind(df, result) %>%
-  # .[, 1:5]
-  # 
->>>>>>> parent of dd153c5... ricerca "greedy" ed estrazione top 3
   
-  #Seconda:
   result <-
     lapply(terms_list, function(x)
-<<<<<<< HEAD
-    filter(mesh, terms == x)) %>%
-    do.call("rbind", .) %>%
-    as.tibble(.)
-  names(result)[2] <- "Candidate Preferred"
-=======
-      mesh[mesh$terms %like% x, 1]) %>%
-    lapply(., function(chr)
-      if (length(chr) == 0)
-        chr <- NA
+      as.tibble(filter(mesh, terms == x)[1]))%>%
+    lapply(., function(df)
+      if (dim(df)[1] == 0)
+        df[1, 1] <- NA
       else
-        chr)
+        df)
+  t_specialty <- cbind(df, result) %>%
+    .[, 1:5]
   
   
+  #Seconda:
+  # result <-
+  #   lapply(terms_list, function(x)
+  #     mesh[mesh$terms %like% x, 1]) %>%
+  #   lapply(., function(chr)
+  #     if (length(chr) == 0)
+  #       chr <- NA
+  #     else
+  #       chr)
+  # 
+  # 
   result <-
     mapply(cbind,
            result,
@@ -122,14 +113,11 @@ add_specialty <- function(df) {
   #matching<-(nrow(result)/length(terms_list))*100
   
   t_specialty <-merge(result,df)
->>>>>>> parent of dd153c5... ricerca "greedy" ed estrazione top 3
   
-  matching<-(nrow(result)/length(terms_list))*100
   
-  t_specialty <- merge(df, result)
   
   # a<-as.list(t_specialty)
-  return( t_specialty)
+  return(t_specialty)
 }
 
 #applico la funzione all'output di metamap
@@ -137,18 +125,28 @@ a <- pblapply(metamap_output, add_specialty)
 
 
 
+#estrazione delle (max 2) specialità mediche
+#funzione da applicare ad ogni elemento della lista a, ovvero una funzione
+#da applicare ad un dataframe
 
-<<<<<<< HEAD
-=======
-classified<-pblapply(a, classifier)
->>>>>>> parent of dd153c5... ricerca "greedy" ed estrazione top 3
+classifier<-function(a.df){
+  count(a.df,Specialty, sort = T)
+}
+
+classified<-pblapply(a, classifier)%>%
+  lapply(., drop_na)
+
+top3<-classified%>%
+  lapply(., function(x)
+    if(dim(x)[1]>=3)
+      x[1:3, 1]
+    else x[,1])
 
 
-
-#  TEST
+#  TEST (da ignorare)
 # mydf <- count(a[[18]], specialty)
 # head(mydf)
-# 
+#
 # mydf.molten <-
 #   melt(
 #     mydf,
@@ -156,11 +154,8 @@ classified<-pblapply(a, classifier)
 #     measure.vars = "n"
 #     )
 # head(mydf.molten)
-# 
+#
 # g<-ggplot(mydf.molten,aes(specialty,value))+
 #   geom_col()+
-# 
+#
 # g
-
-
-
