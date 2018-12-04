@@ -1,6 +1,6 @@
 df <-
   read.csv2(
-    "Train_metamap.csv",
+    "25_FRA.csv",
     stringsAsFactors = F,
     header = T
   )
@@ -10,7 +10,7 @@ df <- df[,4]
 
 write.table(
   df,
-  "Training_metamap.txt",
+  "25_FRA.txt",
   append = F,
   dec = ".",
   col.names = F,
@@ -18,5 +18,3 @@ write.table(
   #sep = \n",
   eol = "\n\n"
 )
-
-
