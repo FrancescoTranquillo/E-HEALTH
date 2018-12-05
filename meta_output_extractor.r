@@ -9,7 +9,7 @@ library(data.table)
 
 
 #leggo l'output di metamap
-metaout <- read_html("25_FRA_out.xml")
+metaout <- read_html("metanostro.xml")
 
 #lo suddivido per le singole app
 mmos <- metaout %>%
@@ -17,7 +17,6 @@ mmos <- metaout %>%
 
 #scrivo la funzione che estrae i dati di interesse per la singola app
 extract_output <- function(x) {
-  
   candidate_score <- x %>%
     html_nodes("candidatescore") %>%
     html_text(trim = F)
@@ -57,8 +56,8 @@ head(metamap_output)
 mesh <- read.csv2("mesh.csv", header = T, stringsAsFactors = F)
 names(mesh)[1] <- "specialty"
 mesh <- mesh[, 1:2]
-mesh <- mesh[!duplicated(mesh),]
-mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
+mesh <- mesh[!duplicated(mesh), ]
+mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all), ]
 
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
@@ -67,37 +66,36 @@ mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
 
 
 add_specialty <- function(df) {
-  
-  terms_list <- as.list(df[[4]])%>%
+  terms_list <- as.list(df[[4]]) %>%
     lapply(., function(term)
-      gsub('[[:punct:] ]+',' ',term))
+      gsub('[[:punct:] ]+', ' ', term))
   
   #due funzioni di ricerca: la prima ricerca ogni termine in modo "greedy", la seconda è più "fuzzy"
   
-  #Prima:
-  # result <-
-  #   lapply(terms_list, function(x)
-  #     as.tibble(filter(mesh, terms == x)[1]))%>%
-  #   lapply(., function(df)
-  #     if (dim(df)[1] == 0)
-  #       df[1, 1] <- NA
-  #     else
-  #       df)
-    #  t_specialty <- cbind(df, result) %>%
-  # .[, 1:5]
-  # 
   
-  #Seconda:
   result <-
     lapply(terms_list, function(x)
-      mesh[mesh$terms %like% x, 1]) %>%
-    lapply(., function(chr)
-      if (length(chr) == 0)
-        chr <- NA
+      as.tibble(filter(mesh, terms == x)[1])) %>%
+    lapply(., function(df)
+      if (dim(df)[1] == 0)
+        df[1, 1] <- NA
       else
-        chr)
+        df)
+  # t_specialty <- cbind(df, result) %>%
+  #   .[, 1:5]
   
   
+  #Seconda:
+  # result <-
+  #   lapply(terms_list, function(x)
+  #     mesh[mesh$terms %like% x, 1]) %>%
+  #   lapply(., function(chr)
+  #     if (length(chr) == 0)
+  #       chr <- NA
+  #     else
+  #       chr)
+  #
+  #
   result <-
     mapply(cbind,
            result,
@@ -105,14 +103,14 @@ add_specialty <- function(df) {
            SIMPLIFY = F)
   
   result <- lapply(result, as.tibble) %>%
-    lapply(., setNames, c("Specialty", "Candidate Preferred"))
+    lapply(., setNames, c("specialty", "Candidate Preferred"))
   
   
-  result <- result %>% 
+  result <- result %>%
     do.call("rbind", .)
   #matching<-(nrow(result)/length(terms_list))*100
   
-  t_specialty <-merge(result,df)
+  t_specialty <- merge(result, df)
   
   
   
@@ -129,27 +127,51 @@ a <- pblapply(metamap_output, add_specialty)
 #funzione da applicare ad ogni elemento della lista a, ovvero una funzione
 #da applicare ad un dataframe
 
-classifier<-function(a.df){
-  count(a.df,Specialty, sort = T)
+classifier <- function(a.df) {
+  count(a.df, specialty, sort = T)
 }
 
-classified<-pblapply(a, classifier)
+classified <- lapply(a, classifier)
+
+# top5 <- classified %>%
+#   lapply(., function(x)
+#     if (all(is.na(x$specialty)))
+#       x$specialty = "Not Matched"
+#     else
+#       x) %>%
+#   lapply(., na.omit)%>%
+#   lapply(., function(x)
+#     if(is.data.frame(x))
+#       if ("Across" %in% x$specialty && !"Across" %in% x$specialty[1])
+#         x <- subset(x, x$specialty != "Across")
+#         else  x
+#     )%>%
+#   lapply(., function(x)
+#     if (dim(x)[1] >= 5)
+#       x[1:5, 1]
+#     else
+#       x[, 1]) %>%
+#   lapply(., transpose)
 
 
 
+
+top5_tab <- top5 %>% rbindlist(., fill = T)
+
+d
 #  TEST (da ignorare)
-# mydf <- count(a[[18]], specialty)
+#  mydf <- count(a[[18]], Specialty)
 # head(mydf)
 #
 # mydf.molten <-
 #   melt(
 #     mydf,
-#     id.vars = "specialty",
+#     id.vars = "Specialty",
 #     measure.vars = "n"
 #     )
 # head(mydf.molten)
 #
-# g<-ggplot(mydf.molten,aes(specialty,value))+
-#   geom_col()+
+# g<-ggplot(mydf.molten,aes(Specialty,value))+
+#   geom_col()
 #
 # g
