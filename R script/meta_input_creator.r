@@ -1,16 +1,16 @@
 df <-
   read.csv2(
-    "25_FRA.csv",
+    "test_set.csv",
     stringsAsFactors = F,
     header = T
   )
-
+df <- df[!apply(is.na(df) | df == "", 1, all),]
 df <- df[,4]
 
 
 write.table(
   df,
-  "25_FRA.txt",
+  "metanostro.txt",
   append = F,
   dec = ".",
   col.names = F,
