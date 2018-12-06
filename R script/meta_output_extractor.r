@@ -72,20 +72,25 @@ add_specialty <- function(df) {
   #crea lista dei preferred
   terms_list <- as.list(df[[4]]) %>%
     lapply(., function(term)
+
       gsub('[[:punct:] ]+', ' ', term))
   
   #matching tra preferred e mesh delle specialità
+
   result <-
     # lapply(terms_list, function(x)
     #   as.tibble(filter(mesh, terms == x)[1])) %>%
     
     lapply(terms_list, function(x)
+
       as.tibble(filter(mesh_specialty, terms == x)[1])) %>%
+
     lapply(., function(df)
       if (dim(df)[1] == 0)
         df[1, 1] <- NA
       else
         df)
+
 
   
   #se tutti i match sono NA, prova con le mesh di across
@@ -98,6 +103,7 @@ add_specialty <- function(df) {
       else
         df)
   }
+
   result <-
     mapply(cbind,
            result,
@@ -130,6 +136,7 @@ classifier <- function(a.df) {
   count(a.df, specialty, sort = T)
 }
 
+
 classified<-lapply(a,classifier)
   
 head(classified)
@@ -158,6 +165,12 @@ lapply(., transpose)
 
 
 
+top3<-classified%>%
+  lapply(., function(x)
+    if(dim(x)[1]>=3)
+      x[1:3, 1]
+    else x[,1])
+
 top3_tab <- top3 %>% rbindlist(., fill = T)
 
 
@@ -182,5 +195,7 @@ write.csv2(result, "test_set_results.csv", row.names = F)
 # g<-ggplot(mydf.molten,aes(Specialty,value))+
 #   geom_col()
 #
+
 # g
+
 
