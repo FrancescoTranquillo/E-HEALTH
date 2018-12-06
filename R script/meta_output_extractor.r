@@ -60,6 +60,7 @@ mesh <- mesh[!duplicated(mesh),]
 mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
 mesh_specialty <- subset(mesh, specialty != "Across")
 mesh_across <- subset(mesh, specialty == "Across")
+
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
 #numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
@@ -67,7 +68,7 @@ mesh_across <- subset(mesh, specialty == "Across")
 
 
 add_specialty <- function(df) {
-  
+
   #crea lista dei preferred
   terms_list <- as.list(df[[4]]) %>%
     lapply(., function(term)
@@ -75,6 +76,9 @@ add_specialty <- function(df) {
   
   #matching tra preferred e mesh delle specialità
   result <-
+    # lapply(terms_list, function(x)
+    #   as.tibble(filter(mesh, terms == x)[1])) %>%
+    
     lapply(terms_list, function(x)
       as.tibble(filter(mesh_specialty, terms == x)[1])) %>%
     lapply(., function(df)
@@ -82,6 +86,7 @@ add_specialty <- function(df) {
         df[1, 1] <- NA
       else
         df)
+
   
   #se tutti i match sono NA, prova con le mesh di across
   if (all(is.na(result))){
@@ -162,6 +167,7 @@ result<-cbind(table,top3_tab)
 
 write.csv2(result, "test_set_results.csv", row.names = F)
 #  TEST (da ignorare)
+
 #  mydf <- count(a[[18]], Specialty)
 # head(mydf)
 #
@@ -177,3 +183,4 @@ write.csv2(result, "test_set_results.csv", row.names = F)
 #   geom_col()
 #
 # g
+
