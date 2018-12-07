@@ -4,7 +4,7 @@ count<-0
 len<- nrow(df)
 len
 
-i<-7
+i<-0
 
 for (i in 1:len){
   y <- c(df[i,15], df[i,16], df[i,17])
