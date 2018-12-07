@@ -1,20 +1,13 @@
 df <-
   read.csv2(
-    "test_set.csv",
+    "wewe.csv",
     stringsAsFactors = F,
     header = T
   )
-df <- df[!apply(is.na(df) | df == "", 1, all),]
-df <- df[,4]
+count<-0
+df2<- df[,2]
+df1<- df[,1]
+if (df2==df1) {
+  count<-count+1
+}
 
-
-write.table(
-  df,
-  "metanostro.txt",
-  append = F,
-  dec = ".",
-  col.names = F,
-  row.names = F,
-  #sep = \n",
-  eol = "\n\n"
-)
