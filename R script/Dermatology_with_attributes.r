@@ -17,9 +17,6 @@ df <-read.csv2("test_set_results.csv" , stringsAsFactors = FALSE)
 df1 <- df %>% filter(grepl("dermatology", V1, ignore.case = TRUE) | grepl("dermatology", V2, ignore.case = TRUE) | grepl("dermatology", V3, ignore.case = TRUE))
 
 
-write.csv2(df1, "Dermatology.csv", row.names = FALSE)
-
-
 #prendo il db con tutti gli attributi
 df2 <- read.csv2("Database_preprocessed_english.csv")
 
