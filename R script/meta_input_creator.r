@@ -1,13 +1,20 @@
 df <-
   read.csv2(
-    "wewe.csv",
+    "database_preprocessed_english_nc_1.csv",
     stringsAsFactors = F,
     header = T
   )
-count<-0
-df2<- df[,2]
-df1<- df[,1]
-if (df2==df1) {
-  count<-count+1
-}
 
+df <- df[,5]
+
+
+write.table(
+  df,
+  "database_preprocessed_english_nc_1.csv.txt",
+  append = F,
+  dec = ".",
+  col.names = F,
+  row.names = F,
+  #sep = \n",
+  eol = "\n\n"
+)

@@ -165,12 +165,6 @@ lapply(., transpose)
 
 
 
-top3<-classified%>%
-  lapply(., function(x)
-    if(dim(x)[1]>=3)
-      x[1:3, 1]
-    else x[,1])
-
 top3_tab <- top3 %>% rbindlist(., fill = T)
 
 
