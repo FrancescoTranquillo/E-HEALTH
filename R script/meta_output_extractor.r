@@ -61,49 +61,48 @@ mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
 mesh_specialty <- subset(mesh, specialty != "Across")
 mesh_across <- subset(mesh, specialty == "Across")
 
+
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
 # (ogni MMO è il risultato dell'analisi di una descrizione) e in uscita riporta il
 #numero di parole che sono presenti nel file mesh, includendo la corrispondente specialità
 #medica
 
-
 add_specialty <- function(df) {
-
   #crea lista dei preferred
   terms_list <- as.list(df[[4]]) %>%
     lapply(., function(term)
-
+      
       gsub('[[:punct:] ]+', ' ', term))
   
   #matching tra preferred e mesh delle specialità
-
+  
   result <-
     # lapply(terms_list, function(x)
     #   as.tibble(filter(mesh, terms == x)[1])) %>%
     
     lapply(terms_list, function(x)
-
+      
       as.tibble(filter(mesh_specialty, terms == x)[1])) %>%
-
+    
     lapply(., function(df)
       if (dim(df)[1] == 0)
         df[1, 1] <- NA
       else
         df)
-
-
+  
+  
   
   #se tutti i match sono NA, prova con le mesh di across
   if (all(is.na(result))){
     result<-lapply(terms_list, function(x)
       as.tibble(filter(mesh_across, terms == x)[1])) %>%
-    lapply(., function(df)
-      if (dim(df)[1] == 0)
-        df[1, 1] <- NA
-      else
-        df)
+      lapply(., function(df)
+        if (dim(df)[1] == 0)
+          df[1, 1] <- NA
+        else
+          df)
   }
-
+  
   result <-
     mapply(cbind,
            result,
@@ -116,11 +115,9 @@ add_specialty <- function(df) {
   
   result <- result %>%
     do.call("rbind", .)
-
-  t_specialty <- merge(result, df)
   
 
-  return(t_specialty)
+  return(result)
 }
 
 #applico la funzione all'output di metamap
