@@ -7,3 +7,8 @@ R script/Database_preprocessing.csv
 R script/Database_preprocessed_english.csv
 R script/Part1/Database_preprocessing.csv
 R script/meta_input_creator.r
+R script/database_preprocessed_english_nc.csv
+R script/database_preprocessed_english_nc_1.csv
+R script/database_preprocessed_english_nc1_across.csv
+R script/database_preprocessed_english_nc_1_across.csv
+R script/database_preprocessed_english_nc_1_across_0.txt
