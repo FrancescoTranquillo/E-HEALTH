@@ -37,11 +37,16 @@ extract_output <- function(x) {
     html_nodes("matchedword") %>%
     html_text(trim = F)
   
+  sem_type <- x %>%
+    html_nodes("semtypes") %>%
+    html_text(trim=F)
+  
   df <- tibble(
     "Candidate Score" = candidate_score,
     "Candidate CUI" = candidate_cui,
     "Candidate Matched" = candidate_matched,
-    "Candidate Preferred" = candidate_preferred
+    "Candidate Preferred" = candidate_preferred,
+    "Semantic Type" = sem_type
   )
   
   
@@ -69,10 +74,10 @@ mesh_across <- subset(mesh, specialty == "Across")
 
 add_specialty <- function(df) {
   #crea lista dei preferred
-  terms_list <- as.list(df[[4]]) %>%
-    lapply(., function(term)
+  terms_list <- as.list(df[[4]]) 
+    #lapply(., function(term)
       
-      gsub('[[:punct:] ]+', ' ', term))
+      #gsub('[[:punct:] ]+', ' ', term))
   
   #matching tra preferred e mesh delle specialità
   
@@ -122,7 +127,6 @@ add_specialty <- function(df) {
 
 #applico la funzione all'output di metamap
 a <- pblapply(metamap_output, add_specialty)
-
 
 
 #estrazione delle (max 2) specialità mediche

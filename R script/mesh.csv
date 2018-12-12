@@ -155,7 +155,6 @@ Cardiology;Inspiratory Capacity
 Cardiology;Inspiratory Reserve Volume
 Cardiology;Tidal Volume
 Cardiology;Ventilation-Perfusion Ratio
-Cardiology;Voice
 Cardiology;Voice Quality
 Cardiology;Work of Breathing
 Cardiology;Yawning
@@ -5894,3 +5893,69 @@ Across;Vine, Bach flower essence
 Across;Write - language ability
 Across;Writing (function)
 Across;Writing (occupation or discipline)
+EmergencyMedicine;Emergency Responders
+EmergencyMedicine;Emergencies Disease Finding
+EmergencyMedicine;Emergencies Disease Finding
+EmergencyMedicine;Alert Type Point in time Patient Nominal
+EmergencyMedicine;General medical service
+EmergencyMedicine;Alert brand of caffeine
+Nutrition;Fasting Status Indicator
+Nutrition;Nutrients
+Nutrition;Health food
+Nutrition;Science of nutrition
+Nutrition;Nutritional status
+Nutrition;Nutrition function
+Pediatrics;Offspring
+Pediatrics;Nurseries
+Pediatrics;Pediatric service
+Pediatrics;Newborn (findings)
+SleepAndRespiratoryCare;Respiratory Status Point in time Patient
+SleepAndRespiratoryCare;Respiratory Status
+SleepAndRespiratoryCare;Smoking cessation therapy
+Oncology;cancer therapy
+Oncology;Primary malignant neoplasm
+Oncology;Malignant Neoplasms
+Oncology;Cancer Patient
+Oncology;cancer care
+Oncology;National Comprehensive Cancer Network
+GinecologyAndObstetrics;Hospitals Maternity
+Oncology;tumor stage
+MentalHealth&Neurology;Mental Recall
+MentalHealth&Neurology;Mental association
+MentalHealth&Neurology;Autism Spectrum Disorders 
+MentalHealth&Neurology;Pervasive Development Disorder
+MentalHealth&Neurology;Children with autism spectrum disorders 
+SensorySystemsHealthcare;Contact Lenses
+SensorySystemsHealthcare;Keratometry
+SensorySystemsHealthcare;Lens device
+SensorySystemsHealthcare;Lens Crystalline
+SensorySystemsHealthcare;Eyeglasses
+SensorySystemsHealthcare;Intracalcarine cortex
+Dermatology;Skin Human
+Dermatology;Skin Specimen
+Dermatology;Skin Care
+Dermatology;pustule
+DiabetesCare;Diabetes
+DiabetesCare;How to Prevent Diabetes
+DiabetesCare;diabetes status
+DiabetesCare;Gestational Diabetes
+Cardiology;cardiac patient
+Cardiology;Artificial cardiac pacemaker
+Cardiology;Pacemaker Procedure
+Cardiology;Pacemaker ECG Assessment
+Cardiology;Atrial Fibrillation by ECG Finding
+Cardiology;Atrial Fibrillation Adverse Event 
+Cardiology;Cerebrovascular accident
+Cardiology;Anticoagulant therapy
+Cardiology;Oximetry, Pulse
+Cardiology;Congenital Heart Defects
+Cardiology;American Heart Association
+Dentistry;Vivadent
+Dentistry;ivoclar
+Dentistry;Oral health
+Dentistry;Mouth care management
+Dentistry;Oral Mucositis
+Dentistry;Stomatitis
+Dentistry;Dentist
+Dentistry;Dentist general
+Surgery;Division surgical procedure
