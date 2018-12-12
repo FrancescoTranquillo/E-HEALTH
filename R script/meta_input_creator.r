@@ -1,16 +1,18 @@
 df <-
   read.csv2(
-    "database_preprocessed_english_nc_1.csv",
+    "database_preprocessed_english_nc_1_across.csv",
     stringsAsFactors = F,
     header = T
   )
 
-df <- df[,5]
+df_across_0<- subset(df, df$Across==0)
+
+df_across_0_descriptions <- df_across_0[,5]
 
 
 write.table(
-  df,
-  "database_preprocessed_english_nc_1.csv.txt",
+  df_across_0_descriptions,
+  "database_preprocessed_english_nc_1_across_0.txt",
   append = F,
   dec = ".",
   col.names = F,
