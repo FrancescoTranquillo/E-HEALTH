@@ -10,13 +10,13 @@ library(vegan)
 
 # carico csv delle app dermatology con tutti gli attributi
 df <-read.csv2("Database_preprocessed_english.csv" , stringsAsFactors = FALSE)
-df_10 <- df[1:10,]
+df <- df[1:10,]
 
 # normalizzo colonna Average.user.ratings
-df$Average.user.rating <- decostand(df$Average.user.rating, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
+df$Norma.average.user.rating <- decostand(df$Average.user.rating, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
 
 # normalizzo colonna Number.of.ratings
-df$Number.of.user.ratings <- decostand(df$Number.of.user.ratings, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
+df$Norma.number.of.user.ratings <- decostand(df$Number.of.user.ratings, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
 
 # cerco nella Description Medical Device, FDA ecc.. e mette TRUE se lo trova o FALSE se non lo trova
 df$Medical_Device <- grepl("Medical Device|medical device|FDA", df$Description)
@@ -36,21 +36,17 @@ for (i in 1:len){
     x <- c(x, char)
 }
 
-df$Description <- x #sostituisco alla descrizione il numero di caratteri
-df$Description <- decostand(df$Description, "range", MARGIN=2, logbase = 2, na.rm=TRUE)  #normalizzo valori
+df$Norma.length.description <- x #metto in una nuova colonna il numero di caratteri
+df$Norma.length.description <- decostand(df$Norma.length.description, "range", MARGIN=2, logbase = 2, na.rm=TRUE)  #normalizzo valori
 
 
-#Calcolo actuality cioè differenza tra data di estrazione e "Release Date"
-df_10$diff_in_days<- difftime(df_10$Date ,df_10$Last.Update.Date , units = c("days"))
+#Calcolo actuality: differenza tra data di estrazione e "Release Date" e normalizzo 
+df$diff_in_days<- difftime(df$Date ,df$Last.Update.Date , units = c("days"))
 
-#normalizzazione
-df_10$diff_in_days <- decostand(df_10$diff_in_days, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
-df_10$diff_in_days <- 1-df_10$diff_in_days
+df$diff_in_days <- decostand(df$diff_in_days, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
+df$diff_in_days <- 1-df$diff_in_days
 
 #verificare se URL del developer ancora attivo 
-library(rvest)
-library(pbapply)
-
 #definisci la funzione 
 check_url<-function(url){
   
@@ -69,8 +65,16 @@ check_url<-function(url){
 }
 
 #esegui la funzione sugli url
-df_10$urlcheck<-pbsapply(df_10$URL, check_url) %>%
-mutate(urlcheck=check_url())
+df$urlcheck<-pbsapply(df$URL, check_url) 
 
 
-#differenza tra date
+
+
+#calcolo ranking
+df[is.na(df)] <- 0  #metto 0 dove c'era NA altrimenti non calcola il punteggio finale
+df$Ranking <- ((df$Norma.average.user.rating*0.17)+(df$Norma.number.of.user.ratings*0.17)+(df$Medical_Device*0.2)+(df$Norma.length.description*0.22)+(df$diff_in_days*0.12)+(df$urlcheck*0.12))
+
+
+
+
+
