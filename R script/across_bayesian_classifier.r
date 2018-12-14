@@ -35,7 +35,7 @@ lapply(my.df_list, names)
 
 names(my.df_list[[5]])[6] <- "NC 1/0"
 names(my.df_list[[11]])[5] <- "NC 1/0"
-
+names(my.df_list[[12]])[5] <- "NC 1/0"
 names(my.df_list[[7]])[5] <- "Description"
 names(my.df_list[[2]])[6] <- "SA1"
 names(my.df_list[[2]])[7] <- "SA2"
@@ -49,19 +49,23 @@ train_test_merged <- lapply(my.df_list, function(df)
 train_test_merged<-train_test_merged%>% 
   do.call("rbind",.)
 
+train_test_merged<-subset(train_test_merged, train_test_merged$`NC 1/0`==1)
+
 #write.csv2(train_test_merged,file = "class_db_no 4.csv",row.names = F)
 
 descr_list<-lapply(my.df_list, function(df)
-  cbind(df["Description"], df[,"SA1"]))%>%
+  cbind(df["Description"], df[, "NC 1/0"],df[,"SA1"]))%>%
   do.call("rbind",.)%>%
   mutate(across = ifelse(grepl(
         pattern = "across", .$SA1, ignore.case = T
       ), 1, 0))
 
-across1<-subset(descr_list, descr_list$across==1)%>%
-  .[,-2]
-across0<-subset(descr_list,descr_list$across==0)%>%
-  .[,-2]%>%
+descr_list_NC1_across<-subset(descr_list, descr_list$`NC 1/0`==1)
+
+across1<-subset(descr_list_NC1_across, descr_list_NC1_across$across==1)%>%
+  .[,-c(2,3)]
+across0<-subset(descr_list_NC1_across,descr_list_NC1_across$across==0)%>%
+  .[,-c(2,3)]%>%
   drop_na()
 
 across0_50<-across0[sample(354),]
@@ -98,7 +102,7 @@ descr_dtm <- DocumentTermMatrix(descr_corpus_clean)
 
 #separo in training e test indicando la percentuale con p, creando gli indici delle
 #righe indiate come train, e quelle indicate come test
-train_index <- createDataPartition(across_df$across, p = 0.75, list = F)
+train_index <- createDataPartition(across_df$across, p = 0.95, list = F)
 
 #separo in train e test usando gli indici trovati al passaggio precendente
 descr_raw_train <- across_df[train_index, ]
@@ -109,7 +113,7 @@ descr_dtm_train <- descr_dtm[train_index,]
 descr_dtm_test <- descr_dtm[-train_index,]
 
 #creo il dizionario di termini sul quale allenare il classificatore
-descr_dict <- findFreqTerms(descr_dtm_train, lowfreq = 100)
+descr_dict <- findFreqTerms(descr_dtm_train, lowfreq = 60)
 
 #filtro le descrizioni utilizzando il dizionario
 descr_train <- DocumentTermMatrix(descr_corpus_clean_train, list(dictionary=descr_dict))
@@ -140,24 +144,62 @@ descr_predict <- predict(descr_model1, descr_test)
 cm <- confusionMatrix(descr_predict, descr_raw_test$across, positive = "0",mode="everything")
 cm
 
+saveRDS(descr_model1, "across_bayesian_classifier.rds")
+across_B <- readRDS("across_bayesian_classifier.rds")
+
 setwd("~/GitHub/E-HEALTH/R script")
 
-#carico tutto il db di app con NC=1
-dbnc1<-read.csv2("database_preprocessed_english_nc_1.csv",stringsAsFactors = F, header = T)
+df_nostro <-
+  read.csv2("test_set_NC.csv",
+            header = T,
+            stringsAsFactors = F)
+df_nostro$NC.1.0 <- factor(df_nostro$NC.1.0)
+df_nostro$Tipo <- factor(df_nostro$Tipo)
 
-df_totale_corpus <-  Corpus(VectorSource(dbnc1$Description))
+df_nostro<-df_nostro%>%
+mutate(across = ifelse(grepl(
+  pattern = "across", .$SA1, ignore.case = T
+), 1, 0))
 
-df_totale_corpus_clean <- clean_corpus(df_totale_corpus)
+df_nostro$across<-factor(df_nostro$across)
+#Trasformo in corpus
+df_nostro_corpus <- Corpus(VectorSource(df_nostro$Description))
 
-df_totale_dtm <- DocumentTermMatrix(df_totale_corpus_clean, list(dictionary=descr_dict))
+df_nostro_corpus_clean <- clean_corpus(df_nostro_corpus)
+
+#filtro il corpus secondo il dizionario definito prima
+df_nostro_dtm <- DocumentTermMatrix(df_nostro_corpus_clean, list(dictionary=descr_dict))
 
 #converto la presenza/assenza in variabile categorica
-df_totale_test <- df_totale_dtm %>% apply(MARGIN=2, convert_counts)
+df_nostro_test <- df_nostro_dtm %>% apply(MARGIN=2, convert_counts)
 
 #predico  utilizzando il modello
-df_totale_predict <- predict(descr_model1, df_totale_test)
+df_nostro_predict1 <- predict(across_B, df_nostro_test)
 
-#aggiungo la classificazione across al db totale
-df_totale_classified<-cbind(dbnc1, "Across"=df_totale_predict)
+#creo e richiamo la matrice di confusione
+df_nostro_cm1 <- confusionMatrix(df_nostro_predict1, df_nostro$across,  positive="0", mode = "everything")
+df_nostro_cm1
 
-write.csv2(df_totale_classified, "database_preprocessed_english_nc_1_across.csv", row.names = F)
+df_nostro$across_predicted<-as.numeric(levels(df_nostro_predict1))[df_nostro_predict1]
+
+write.csv2(df_nostro, "test_set_NC_across.csv",row.names = F)
+
+# #carico tutto il db di app con NC=1
+# dbnc1<-read.csv2("database_preprocessed_english_nc_1.csv",stringsAsFactors = F, header = T)
+# 
+# df_totale_corpus <-  Corpus(VectorSource(dbnc1$Description))
+# 
+# df_totale_corpus_clean <- clean_corpus(df_totale_corpus)
+# 
+# df_totale_dtm <- DocumentTermMatrix(df_totale_corpus_clean, list(dictionary=descr_dict))
+# 
+# #converto la presenza/assenza in variabile categorica
+# df_totale_test <- df_totale_dtm %>% apply(MARGIN=2, convert_counts)
+# 
+# #predico  utilizzando il modello
+# df_totale_predict <- predict(descr_model1, df_totale_test)
+# 
+# #aggiungo la classificazione across al db totale
+# df_totale_classified<-cbind(dbnc1, "Across"=df_totale_predict)
+# 
+# write.csv2(df_totale_classified, "database_preprocessed_english_nc_1_across.csv", row.names = F)
