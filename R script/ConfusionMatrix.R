@@ -8,7 +8,7 @@ library(e1071)
 
 
 
-df <-read.csv2("75_NC_Across.csv" , stringsAsFactors = FALSE)
+df <-read.csv2("75_NC_across.csv" , stringsAsFactors = FALSE)
 
 
 
@@ -49,20 +49,36 @@ df$SensorySystemsHealthcare <- (grepl("Sensory ", df$V1, ignore.case = T)|grepl(
 df$SleepAndRespiratoryCare <- (grepl("Sleep", df$V1, ignore.case = T)|grepl("Sleep", df$V2, ignore.case = T)|grepl("Sleep", df$V3, ignore.case = T))
 df$Surgery <- (grepl("Surgery", df$V1, ignore.case = T)|grepl("Surgery", df$V2, ignore.case = T)|grepl("Surgery", df$V3, ignore.case = T))
 
-df1 <- df[18:47] 
+
+
+df1 <- df[21:50] 
+
 df1 <- ifelse(df1 == TRUE, "1", "0")%>%
-  as.data.frame()
+ as.data.frame() 
+
+
+
+levels(df1$NutritionM) <- c(levels(df1$NutritionM), "1")
+levels(df1$OncologyM) <- c(levels(df1$OncologyM), "1")
+levels(df1$SleepAndRespiratoryCareM) <- c(levels(df1$SleepAndRespiratoryCareM), "1")
+levels(df1$SurgeryM) <- c(levels(df1$SurgeryM), "1")
+
+
+df$NC.1.0 <- as.factor(df$NC.1.0)
+df$NC_predicted <- as.factor(df$NC_predicted)
+df$across <- as.factor(df$across)
+df$across_predicted <- as.factor(df$across_predicted)
 
 
 cmNC <- confusionMatrix(df$NC_predicted, df$NC.1.0, positive = "0", mode="everything")
 cmAcross <- confusionMatrix(df$across_predicted, df$across, positive = "0", mode="everything") 
 cmCardiology <- confusionMatrix(df1$Cardiology, df1$CardiologyM,  positive = "0", mode="everything")
 cmCardiology
-cmDentistry <-confusionMatrix(df1$Dentistry, df1$DentistryM,  positive = "0", mode="everything")
-cmDermatology <-confusionMatrix(df1$Dermatology, df1$DermatologyM,  positive = "0", mode="everything")
-cmDiabetesCare <-confusionMatrix(df1$DiabetesCare, df1$DiabetesCareM,  positive = "0", mode="everything")
+#cmDentistry <-confusionMatrix(df1$Dentistry, df1$DentistryM,  positive = "0", mode="everything")
+#cmDermatology <-confusionMatrix(df1$Dermatology, df1$DermatologyM,  positive = "0", mode="everything")
+#cmDiabetesCare <-confusionMatrix(df1$DiabetesCare, df1$DiabetesCareM,  positive = "0", mode="everything")
 cmEmergencyMedicine <-confusionMatrix(df1$EmergencyMedicine, df1$EmergencyMedicineM,  positive = "0", mode="everything")
-cmEndocrinology <-confusionMatrix(df1$Endocrinology, df1$EndocrinologyM,  positive = "0", mode="everything")
+#cmEndocrinology <-confusionMatrix(df1$Endocrinology, df1$EndocrinologyM,  positive = "0", mode="everything")
 #cmGastroenterology <-confusionMatrix(df1$Gastroenterology, df1$GastroenterologyM,  positive = "0", mode="everything") #solo un livello
 cmMentalHealthAndNeurology <-confusionMatrix(df1$MentalHealthAndNeurology, df1$MentalHealthAndNeurologyM,  positive = "0", mode="everything")
 cmNutrition <-confusionMatrix(df1$Nutrition, df1$NutritionM,  positive = "0", mode="everything")
