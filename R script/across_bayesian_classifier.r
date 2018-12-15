@@ -113,7 +113,7 @@ descr_dtm_train <- descr_dtm[train_index,]
 descr_dtm_test <- descr_dtm[-train_index,]
 
 #creo il dizionario di termini sul quale allenare il classificatore
-descr_dict <- findFreqTerms(descr_dtm_train, lowfreq = 60)
+descr_dict <- findFreqTerms(descr_dtm_train, lowfreq = 20)
 
 #filtro le descrizioni utilizzando il dizionario
 descr_train <- DocumentTermMatrix(descr_corpus_clean_train, list(dictionary=descr_dict))
@@ -150,7 +150,7 @@ across_B <- readRDS("across_bayesian_classifier.rds")
 setwd("~/GitHub/E-HEALTH/R script")
 
 df_nostro <-
-  read.csv2("test_set_NC.csv",
+  read.csv2("./Tabelle to be consegnate/75_NC.csv",
             header = T,
             stringsAsFactors = F)
 df_nostro$NC.1.0 <- factor(df_nostro$NC.1.0)
@@ -182,24 +182,26 @@ df_nostro_cm1
 
 df_nostro$across_predicted<-as.numeric(levels(df_nostro_predict1))[df_nostro_predict1]
 
-write.csv2(df_nostro, "test_set_NC_across.csv",row.names = F)
+write.csv2(df_nostro, "./Tabelle to be consegnate/75_NC_across.csv",row.names = F)
 
-# #carico tutto il db di app con NC=1
-# dbnc1<-read.csv2("database_preprocessed_english_nc_1.csv",stringsAsFactors = F, header = T)
-# 
-# df_totale_corpus <-  Corpus(VectorSource(dbnc1$Description))
-# 
-# df_totale_corpus_clean <- clean_corpus(df_totale_corpus)
-# 
-# df_totale_dtm <- DocumentTermMatrix(df_totale_corpus_clean, list(dictionary=descr_dict))
-# 
-# #converto la presenza/assenza in variabile categorica
-# df_totale_test <- df_totale_dtm %>% apply(MARGIN=2, convert_counts)
-# 
-# #predico  utilizzando il modello
-# df_totale_predict <- predict(descr_model1, df_totale_test)
-# 
-# #aggiungo la classificazione across al db totale
-# df_totale_classified<-cbind(dbnc1, "Across"=df_totale_predict)
-# 
-# write.csv2(df_totale_classified, "database_preprocessed_english_nc_1_across.csv", row.names = F)
+#carico tutto il db di app con NC=1
+dbnc1<-read.csv2("./Tabelle to be consegnate/database_english_nc.csv",stringsAsFactors = F, header = T)
+dbnc1<-subset(dbnc1, dbnc1$NC==1)
+
+df_totale_corpus <-  Corpus(VectorSource(dbnc1$Description))
+
+df_totale_corpus_clean <- clean_corpus(df_totale_corpus)
+
+df_totale_dtm <- DocumentTermMatrix(df_totale_corpus_clean, list(dictionary=descr_dict))
+
+#converto la presenza/assenza in variabile categorica
+df_totale_test <- df_totale_dtm %>% apply(MARGIN=2, convert_counts)
+
+#predico  utilizzando il modello
+df_totale_predict <- predict(across_B, df_totale_test)
+
+#aggiungo la classificazione across al db totale
+df_totale_classified<-cbind(dbnc1, "Across"=df_totale_predict)
+
+write.csv2(df_totale_classified, "./Tabelle to be consegnate/database_english_nc1_across.csv", row.names = F)
+
