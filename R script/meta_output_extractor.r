@@ -9,7 +9,7 @@ library(data.table)
 
 
 #leggo l'output di metamap
-metaout <- read_html("metanostro.xml")
+metaout <- read_html("./Tabelle to be consegnate/metamap_75.xml")
 
 #lo suddivido per le singole app
 mmos <- metaout %>%
@@ -64,7 +64,7 @@ mesh <- mesh[, 1:2]
 mesh <- mesh[!duplicated(mesh),]
 mesh <- mesh[!apply(is.na(mesh) | mesh == "", 1, all),]
 mesh_specialty <- subset(mesh, specialty != "Across")
-mesh_across <- subset(mesh, specialty == "Across")
+#mesh_across <- subset(mesh, specialty == "Across")
 
 
 #scrivo la funzione che prende in ingresso un singolo MMO di metamap
@@ -97,16 +97,16 @@ add_specialty <- function(df) {
   
   
   
-  #se tutti i match sono NA, prova con le mesh di across
-  if (all(is.na(result))){
-    result<-lapply(terms_list, function(x)
-      as.tibble(filter(mesh_across, terms == x)[1])) %>%
-      lapply(., function(df)
-        if (dim(df)[1] == 0)
-          df[1, 1] <- NA
-        else
-          df)
-  }
+  # #se tutti i match sono NA, prova con le mesh di across
+  # if (all(is.na(result))){
+  #   result<-lapply(terms_list, function(x)
+  #     as.tibble(filter(mesh_across, terms == x)[1])) %>%
+  #     lapply(., function(df)
+  #       if (dim(df)[1] == 0)
+  #         df[1, 1] <- NA
+  #       else
+  #         df)
+  # }
   
   result <-
     mapply(cbind,
@@ -169,11 +169,17 @@ lapply(., transpose)
 top3_tab <- top3 %>% rbindlist(., fill = T)
 
 
-table<-read.csv2("test_set.csv",header = T, stringsAsFactors = F)
-table <- table[!apply(is.na(table) | table == "", 1, all),]
-result<-cbind(table,top3_tab)
+table<-read.csv2("./Tabelle to be consegnate/75_NC_across.csv",header = T, stringsAsFactors = F)
+names(table)
+table<-table[, -c(15:17)]
 
-write.csv2(result, "test_set_results.csv", row.names = F)
+table_across_0<-subset(table, table$across_predicted==0)
+#table <- table[!apply(is.na(table) | table == "", 1, all),]
+result_across_0<-cbind(table_across_0,top3_tab)
+
+result<-merge(table, result_across_0, all = T)
+
+write.csv2(result, "./Tabelle to be consegnate/75_results.csv", row.names = F)
 #  TEST (da ignorare)
 
 #  mydf <- count(a[[18]], Specialty)
