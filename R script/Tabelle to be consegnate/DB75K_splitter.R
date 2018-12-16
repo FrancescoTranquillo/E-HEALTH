@@ -1,7 +1,7 @@
 
 rm(list = ls())
 
-library(base)
+library(tidyverse)
 
 df <- read.csv2("database_english_nc1_across.csv", stringsAsFactors = FALSE) %>%
   .[!duplicated(.), ]
@@ -20,20 +20,21 @@ for (i in 1:n) {
   )
   write.csv2(df.list[[i]], filename, row.names = FALSE)
   df1 <- read.csv2(filename,stringsAsFactors = F, header = T)
-  df1_description <- df1$Description
+  df1_ID_description <- df1[, c(3,5)]
   filename2 <- paste0(
-    "./File_Meta_75K/75KDescription_Part",
+    "./File_Meta_75K/75KDescription_ID_Part",
     i,
     ".txt"
   )
   write.table(
-    df1_description,
+    df1_ID_description,
     filename2,
     append = F,
     dec = ".",
     col.names = F,
     row.names = F,
-    eol = "\n\n"
+    sep= "|",
+    eol = "\n"
   )
 }
   
