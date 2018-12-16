@@ -71,22 +71,22 @@ df$across_predicted <- as.factor(df$across_predicted)
 
 
 cmNC <- confusionMatrix(df$NC_predicted, df$NC.1.0, positive = "0", mode="everything")
-cmAcross <- confusionMatrix(df$across_predicted, df$across, positive = "0", mode="everything") 
-cmCardiology <- confusionMatrix(df1$Cardiology, df1$CardiologyM,  positive = "0", mode="everything")
+cmAcross <- confusionMatrix(df$across_predicted, df$across, positive = "1", mode="everything") 
+cmCardiology <- confusionMatrix(df1$Cardiology, df1$CardiologyM,  positive = "1", mode="everything")
 cmCardiology
 #cmDentistry <-confusionMatrix(df1$Dentistry, df1$DentistryM,  positive = "0", mode="everything")
 #cmDermatology <-confusionMatrix(df1$Dermatology, df1$DermatologyM,  positive = "0", mode="everything")
 #cmDiabetesCare <-confusionMatrix(df1$DiabetesCare, df1$DiabetesCareM,  positive = "0", mode="everything")
-cmEmergencyMedicine <-confusionMatrix(df1$EmergencyMedicine, df1$EmergencyMedicineM,  positive = "0", mode="everything")
+cmEmergencyMedicine <-confusionMatrix(df1$EmergencyMedicine, df1$EmergencyMedicineM,  positive = "1", mode="everything")
 #cmEndocrinology <-confusionMatrix(df1$Endocrinology, df1$EndocrinologyM,  positive = "0", mode="everything")
 #cmGastroenterology <-confusionMatrix(df1$Gastroenterology, df1$GastroenterologyM,  positive = "0", mode="everything") #solo un livello
-cmMentalHealthAndNeurology <-confusionMatrix(df1$MentalHealthAndNeurology, df1$MentalHealthAndNeurologyM,  positive = "0", mode="everything")
-cmNutrition <-confusionMatrix(df1$Nutrition, df1$NutritionM,  positive = "0", mode="everything")
-cmOncology <-confusionMatrix(df1$Oncology, df1$OncologyM,  positive = "0", mode="everything")
-cmPediatrics <-confusionMatrix(df1$Pediatrics, df1$PediatricsM,  positive = "0", mode="everything")
-cmSensorySystemsHealthcare <-confusionMatrix(df1$SensorySystemsHealthcare, df1$SensorySystemsHealthcareM,  positive = "0", mode="everything")
-cmSleepAndRespiratoryCare <-confusionMatrix(df1$SleepAndRespiratoryCare, df1$SleepAndRespiratoryCareM,  positive = "0", mode="everything")
-cmSurgery <-confusionMatrix(df1$Surgery, df1$SurgeryM,  positive = "0", mode="everything")
-cmGynecology <-confusionMatrix(df1$GynecologyandObstetrics, df1$GynecologyandObstetricsM,  positive = "0", mode="everything")
+cmMentalHealthAndNeurology <-confusionMatrix(df1$MentalHealthAndNeurology, df1$MentalHealthAndNeurologyM,  positive = "1", mode="everything")
+cmNutrition <-confusionMatrix(df1$Nutrition, df1$NutritionM,  positive = "1", mode="everything")
+cmOncology <-confusionMatrix(df1$Oncology, df1$OncologyM,  positive = "1", mode="everything")
+cmPediatrics <-confusionMatrix(df1$Pediatrics, df1$PediatricsM,  positive = "1", mode="everything")
+cmSensorySystemsHealthcare <-confusionMatrix(df1$SensorySystemsHealthcare, df1$SensorySystemsHealthcareM,  positive = "1", mode="everything")
+cmSleepAndRespiratoryCare <-confusionMatrix(df1$SleepAndRespiratoryCare, df1$SleepAndRespiratoryCareM,  positive = "1", mode="everything")
+cmSurgery <-confusionMatrix(df1$Surgery, df1$SurgeryM,  positive = "1", mode="everything")
+cmGynecology <-confusionMatrix(df1$GynecologyandObstetrics, df1$GynecologyandObstetricsM,  positive = "1", mode="everything")
 
 
