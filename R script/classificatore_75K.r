@@ -1,6 +1,6 @@
 rm(list = ls())
 
-library(rvest)
+
 library(tidyverse)
 library(pbapply)
 library(reshape2)
@@ -9,9 +9,12 @@ library(data.table)
 
 
 #leggo l'output di metamap
-metaout <- read.table("./Tabelle to be consegnate/Results/75KDescription_ID_Part2_results.txt",sep = "|",fill = T,
+metaout1 <- read.table("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part1_A.txt",sep = "|",fill = T,
                       row.names=NULL,header = F)
+metaout2 <- read.table("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part1_B.txt",sep = "|",fill = T,
+                       row.names=NULL,header = F)
 
+metaout<- rbind(metaout1, metaout2)
 metaout_ID_Candidate<-metaout[,c(1,4)]
 metaout_ID_Candidate$V4<-as.character(metaout_ID_Candidate$V4)
 
@@ -109,8 +112,8 @@ lapply(., transpose)
 top3_tab <- top3 %>% rbindlist(., fill = T)
 
 
-table<-read.csv2("./Tabelle to be consegnate/File_Meta_75K/75K_Part2.csv",header = T, stringsAsFactors = F)
-table<-table[1:420,]
+table<-read.csv2("./Tabelle to be consegnate/File_Meta_75K/75K_Part1.csv",header = T, stringsAsFactors = F)
+
 
 
 result<-cbind(table, top3_tab)
