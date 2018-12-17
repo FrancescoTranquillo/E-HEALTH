@@ -6,11 +6,11 @@ library(ggplot2)
 library(data.table)
 library(plyr)
 library(vegan)
-
+library(RCurl)
 
 # carico csv delle app dermatology con tutti gli attributi
-df <-read.csv2("Database_preprocessed_english.csv" , stringsAsFactors = FALSE)
-df <- df[1:10,]
+df <-read.csv2("./Tabelle to be consegnate/Results/75K_Part6_results_2.csv" , stringsAsFactors = FALSE)
+#df <- df[1:10,]
 
 # normalizzo colonna Average.user.ratings
 df$Norma.average.user.rating <- decostand(df$Average.user.rating, "range", MARGIN=2, logbase = 2, na.rm=TRUE)
@@ -50,22 +50,42 @@ df$diff_in_days <- 1-df$diff_in_days
 #definisci la funzione 
 check_url<-function(url){
   
-  possibleError <- tryCatch(
-    
-    read_html(url),
-    error = function(e)
-      e
-  )
-  
-  if (inherits(possibleError, "error")) {
-    check<-0
-  }else
-    check<-1
-  return(check)
+  check<-ifelse(url.exists(url),yes = 1,no=0)
+  # possibleError <- tryCatch(
+  #   
+  #   read_html(url),
+  #   error = function(e)
+  #     e
+  # )
+  # 
+  # if (inherits(possibleError, "error")) {
+  #   check<-0
+  # }else
+  #   check<-1
+  # return(check)
 }
+cl <- makeCluster(detectCores() - 1)
+
+clusterEvalQ(cl, {
+  library(rvest)
+  library(tidyverse)
+  library(pbapply)
+  library(reshape2)
+  library(ggplot2)
+  library(data.table)
+  library(plyr)
+  library(vegan)
+  library(RCurl)
+})
+
+clusterExport(cl,
+              c("df", "check_url"))
 
 #esegui la funzione sugli url
-df$urlcheck<-pbsapply(df$URL, check_url) 
+df$urlcheck<-pbsapply(df$URL, check_url,cl = cl) 
+
+stopCluster(cl)
+
 
 
 
@@ -75,6 +95,32 @@ df[is.na(df)] <- 0  #metto 0 dove c'era NA altrimenti non calcola il punteggio f
 df$Ranking <- ((df$Norma.average.user.rating*0.17)+(df$Norma.number.of.user.ratings*0.17)+(df$Medical_Device*0.2)+(df$Norma.length.description*0.22)+(df$diff_in_days*0.12)+(df$urlcheck*0.12))
 
 
-
-
-
+# install.packages('microbenchmark')  
+# library(microbenchmark) 
+# library(viridis)
+# results <- microbenchmark(  
+#   check_url.test = pbsapply(df$URL[2:20], check_url),
+#   check_url_parallelized.test  = pbsapply(df$URL[2:20], check_url,cl=cl),
+#   times = 10)
+# 
+# 
+# autoplot(results)+
+#   aes(fill = expr)+
+#   the
+# 
+# 
+#   qplot(y=time,data=results, colour=expr)+geom_smooth(alpha=.5)+ labs(title = "Parallel vs Unparallel url checking")+
+#   aes(fill = expr)
+# 
+# print(results)
+# time2<-results$time/1e9
+# qplot(y=time2,data=results, colour=expr)+geom_smooth(size = 1.5)+
+#   geom_point(size = 3, alpha=1, colour="black", aes(fill=expr),shape = 21, stroke = 1.5)+
+#   geom_jitter(width = 1,height = 0.5, size=3, alpha=1, colour="black", aes(fill=expr),shape = 21, stroke = 1.5)+
+#   aes(fill=expr)+
+#   theme_classic(base_size = 18)+
+#   labs(x = "urls checked")+
+#   labs(y = "time [s]")+
+#   ggtitle("URLs validation") +
+#   theme(plot.title = element_text(hjust = 0.5))+
+#   labs(subtitle= "Parallelization versus Serial approach", hjust=0.5)

@@ -9,26 +9,14 @@ library(data.table)
 
 
 #leggo l'output di metamap
-metaout <- read_html("./Tabelle to be consegnate/metamap_75.xml")
+metaout <- read.table("./Tabelle to be consegnate/Results/75KDescription_ID_Part2_results.txt",sep = "|",fill = T,
+                      row.names=NULL,header = F)
 
-#lo suddivido per le singole app
-mmos <- metaout %>%
-  html_nodes("mmo")
+metaout_ID_Candidate<-metaout[,c(1,4)]
+metaout_ID_Candidate$V4<-as.character(metaout_ID_Candidate$V4)
 
-#scrivo la funzione che estrae i dati di interesse per la singola app
-extract_output <- function(x) {
-  
-  candidate_preferred <- x %>%
-    html_nodes("candidatepreferred") %>%
-    html_text(trim = F)
-  
-  df <- tibble("Candidate Preferred" = candidate_preferred)
-  
-  
-}
+metamap_output<-split(tibble("Candidate Preferred"=metaout_ID_Candidate$V4),metaout_ID_Candidate$V1)
 
-#applico la funzione a tutte le app
-metamap_output <- pblapply(mmos, extract_output)
 head(metamap_output)
 
 
@@ -49,7 +37,7 @@ mesh_specialty <- subset(mesh, specialty != "Across")
 
 add_specialty <- function(df) {
   #crea lista dei preferred
-  terms_list <- as.list(df) 
+  terms_list <- as.list(df$`Candidate Preferred`) 
 
   
   result <-lapply(terms_list, function(x)
@@ -121,8 +109,8 @@ lapply(., transpose)
 top3_tab <- top3 %>% rbindlist(., fill = T)
 
 
-table<-read.csv2("./Tabelle to be consegnate/75_NC_across.csv",header = T, stringsAsFactors = F)
-
+table<-read.csv2("./Tabelle to be consegnate/File_Meta_75K/75K_Part2.csv",header = T, stringsAsFactors = F)
+table<-table[1:420,]
 
 
 result<-cbind(table, top3_tab)
