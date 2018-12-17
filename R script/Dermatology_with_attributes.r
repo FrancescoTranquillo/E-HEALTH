@@ -9,8 +9,18 @@ library(data.table)
 library(plyr)
 
 
+df1 <-read.csv2("75K_Part1_results.csv" , stringsAsFactors = FALSE)
+df2 <-read.csv2("75K_Part2_results.csv" , stringsAsFactors = FALSE)
+df3 <-read.csv2("75K_Part3_results.csv" , stringsAsFactors = FALSE)
+df4 <-read.csv2("75K_Part4_results.csv" , stringsAsFactors = FALSE)
+df5 <-read.csv2("75K_Part5_results.csv" , stringsAsFactors = FALSE)
+df6 <-read.csv2("75K_Part6_results.csv" , stringsAsFactors = FALSE)
+
+df <- rbind(df1, df2, df3, df4, df5, df6)
+
+
 #da mettere il file csv corretto 
-df <-read.csv2("test_set_results.csv" , stringsAsFactors = FALSE)
+#df <-read.csv2("test_set_results.csv" , stringsAsFactors = FALSE)
 
 
 #Prendo solo app che sono state categorizzate "dermatology" 
