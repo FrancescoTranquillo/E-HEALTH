@@ -74,11 +74,14 @@ my.df <- within(my.df, {
 })
 
 write.csv2(my.df, paste0(path, "db_totale.csv"), row.names = FALSE)
-
+db_tot<-read.csv2(file =  paste0(path, "db_totale.csv"), header = T, stringsAsFactors = F)
+my.df<-db_tot
 #Prendo solo app che sono state categorizzate "dermatology"
 df_dermatology <- my.df[which(my.df$V1=="Dermatology"),]
 
+df_derma2<-df_dermatology[which(is.na(df_dermatology$V2)),]
 
+df_derma_sample10<-sample_n(df_derma2,size = 10, replace = F)
 #
 #
 # #prendo il db con tutti gli attributi
@@ -89,4 +92,4 @@ df_dermatology <- my.df[which(my.df$V1=="Dermatology"),]
 # d<-merge(df1, df2, by="ID")
 
 
-write.csv2(df_dermatology, paste0(path, "Dermatology.csv"), row.names = FALSE)
+write.csv2(df_derma2, paste0(path, "Dermatology.csv"), row.names = FALSE)
