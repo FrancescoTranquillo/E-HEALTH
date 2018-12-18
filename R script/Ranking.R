@@ -7,9 +7,9 @@ library(data.table)
 library(plyr)
 library(vegan)
 library(RCurl)
-
+library(parallel)
 # carico csv delle app dermatology con tutti gli attributi
-df <-read.csv2("./Tabelle to be consegnate/Results/75K_Part6_results_2.csv" , stringsAsFactors = FALSE)
+df <-read.csv2("./Tabelle to be consegnate/Results/Dermatology.csv" , stringsAsFactors = FALSE)
 #df <- df[1:10,]
 
 # normalizzo colonna Average.user.ratings
@@ -87,14 +87,14 @@ df$urlcheck<-pbsapply(df$URL, check_url,cl = cl)
 stopCluster(cl)
 
 
-
-
-
 #calcolo ranking
 df[is.na(df)] <- 0  #metto 0 dove c'era NA altrimenti non calcola il punteggio finale
 df$Ranking <- ((df$Norma.average.user.rating*0.17)+(df$Norma.number.of.user.ratings*0.17)+(df$Medical_Device*0.2)+(df$Norma.length.description*0.22)+(df$diff_in_days*0.12)+(df$urlcheck*0.12))
 
+df_top60<-df[order(-df$Ranking),]%>%.[1:60,]
 
+write.csv2(df, paste0(path, "Dermatology.csv"), row.names = FALSE)
+write.csv2(df_top60, paste0(path, "Dermatology_top60.csv"), row.names = FALSE)
 # install.packages('microbenchmark')  
 # library(microbenchmark) 
 # library(viridis)
