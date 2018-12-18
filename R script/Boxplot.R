@@ -1,31 +1,17 @@
-
+library(reshape)
 ###Apro il primo csv con le top ranking derma
-df<-read.csv2(".csv")  
+
+df<-read.csv2("Database_preprocessing.csv")   #è un file di prova che ho nel desktop non riesco a caricarlo perchè troppo pesante per github
 df<-na.omit(df)    #Non so se omettere gli NA
+df1<-df[,19:22]
+gsub(',', '.', df1)
+# df1<-as.numeric(df1)
+df<- melt(df1, a.rm = FALSE, value.name = "mediche")
 
-###Apro il primo csv con le dermatolog
-df1<-read.csv2(".csv")   
-df1<-na.omit(df) 
-
-###Apro il primo csv con le mediche totali
-df2<-read.csv2(".csv")   
-df2<-na.omit(df)
-
-
-
-gsub(',', '.', df[,2])    ##Prendo la colonna che mi interessa del primo csv
-x<-as.numeric(df[,2])     ##la trasformo prima . con , e poi salvo in numerico
-gsub(',', '.', df[,2])   ##Prendo la colonna che mi interessa del secondo csv
-y<-as.numeric(df[,2])
-gsub(',', '.', df[,2])    ##Prendo la colonna che mi interessa del terzo csv
-z<-as.numeric(df[,2])
-df1<-cbind(x, y, z)
-df1
-boxplot(df1)
-
-
-
-
+df
+# ###Apro il primo csv con le derma
+# gsub(',', '.', df[,13])
+# age<-as.numeric(df[,13])
 # gsub(',', '.', df[,18])
 # rating<-as.numeric(df[,18])
 # rating
