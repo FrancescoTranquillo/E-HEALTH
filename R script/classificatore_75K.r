@@ -7,20 +7,41 @@ library(reshape2)
 library(ggplot2)
 library(data.table)
 
-
 #leggo l'output di metamap
-metaout1 <- read.table("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part1_A.txt",sep = "|",fill = T,
-                      row.names=NULL,header = F)
-metaout2 <- read.table("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part1_B.txt",sep = "|",fill = T,
-                       row.names=NULL,header = F)
+metaout1 <-fread("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part4_results.txt",
+                 data.table = F,
+                 fill=T,
+                 sep = "|")
+
+metaout2 <-fread("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part4_b_results.txt",
+                 data.table = F,
+                 fill=T,
+                 sep = "|")
+# metaout3 <-fread("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part5_C.txt.out",
+#                  data.table = F,
+#                  fill=T,
+#                  sep = "|")
+
+metaout2$V1<-factor(metaout2$V1)
+metaout1$V1<-factor(metaout1$V1)
+metaout3$V1<-factor(metaout3$V1)
+# metaout1 <- read.table("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part1_A.txt",sep = "|",fill = T,
+#                       row.names=NULL,header = F)
+# metaout2 <- read.table("./Tabelle to be consegnate/File_Meta_75K/75KDescription_ID_Part1_B.txt",sep = "|",fill = T,
+#                        row.names=NULL,header = F)
 
 metaout<- rbind(metaout1, metaout2)
 metaout_ID_Candidate<-metaout[,c(1,4)]
 metaout_ID_Candidate$V4<-as.character(metaout_ID_Candidate$V4)
 
-metamap_output<-split(tibble("Candidate Preferred"=metaout_ID_Candidate$V4),metaout_ID_Candidate$V1)
+dt <- data.table(metaout_ID_Candidate)
+dt[, grp := .GRP, by = V1]
+setkey(dt, grp)
+metamap_output <- dt[, list(list(.SD)), by = grp]$V1
 
-head(metamap_output)
+#metamap_output<-split(tibble("Candidate Preferred"=metaout_ID_Candidate$V4),metaout_ID_Candidate$V1, )
+
+
 
 
 #carico il file mesh e lo preparo togliendo duplicati e colonne inutili
@@ -40,7 +61,7 @@ mesh_specialty <- subset(mesh, specialty != "Across")
 
 add_specialty <- function(df) {
   #crea lista dei preferred
-  terms_list <- as.list(df$`Candidate Preferred`) 
+  terms_list <- as.list(df$`V4`) 
 
   
   result <-lapply(terms_list, function(x)
@@ -81,7 +102,7 @@ classifier <- function(a.df) {
 }
 
 
-classified<-lapply(a,classifier)
+classified<-pblapply(a,classifier)
   
 head(classified)
 classified_na<-sapply(classified, function(x)
@@ -112,30 +133,32 @@ lapply(., transpose)
 top3_tab <- top3 %>% rbindlist(., fill = T)
 
 
-table<-read.csv2("./Tabelle to be consegnate/File_Meta_75K/75K_Part1.csv",header = T, stringsAsFactors = F)
+table<-read.csv2("./Tabelle to be consegnate/File_Meta_75K/75K_Part4.csv",header = T, stringsAsFactors = F)
+table$ID<-as.character(table$ID)
 
+f1 <- first(metaout1$V1)
+l1 <- last(metaout1$V1)
+f2 <- first(metaout2$V1)
+l2 <- last(metaout2$V1)
 
+rf1<- which(table$ID==f1)
+rl1<- which(table$ID==l1)
+rf2<- which(table$ID==f2)
+rl2<- which(table$ID==l2)
+
+table1<-table[rf1:rl1,]
+table2<-table[rf2:rl2,]
+
+table<-rbind(table1,table2)
+
+x<-table$ID
+y<-as.character(as.numeric(levels(metaout$V1))[metaout$V1])
+z<-setdiff(x,y)
+
+table<-table[-(which(table$ID==z)),]
 
 result<-cbind(table, top3_tab)
 
-write.csv2(result, "./Tabelle to be consegnate/75K6part2_results.csv", row.names = F)
-#  TEST (da ignorare)
-
-#  mydf <- count(a[[18]], Specialty)
-# head(mydf)
-#
-# mydf.molten <-
-#   melt(
-#     mydf,
-#     id.vars = "Specialty",
-#     measure.vars = "n"
-#     )
-# head(mydf.molten)
-#
-# g<-ggplot(mydf.molten,aes(Specialty,value))+
-#   geom_col()
-#
-
-# g
+write.csv2(result, "./Tabelle to be consegnate/Results/75K_Part4_results.csv", row.names = F)
 
 
