@@ -8,7 +8,8 @@ library(e1071)
 
 
 
-df <-read.csv2("75_NC_across.csv" , stringsAsFactors = FALSE)
+df <-read.csv2("75_results.csv" , stringsAsFactors = FALSE)
+
 
 
 
@@ -59,8 +60,8 @@ df1 <- ifelse(df1 == TRUE, "1", "0")%>%
 
 
 levels(df1$NutritionM) <- c(levels(df1$NutritionM), "1")
-levels(df1$OncologyM) <- c(levels(df1$OncologyM), "1")
-levels(df1$SleepAndRespiratoryCareM) <- c(levels(df1$SleepAndRespiratoryCareM), "1")
+#levels(df1$OncologyM) <- c(levels(df1$OncologyM), "1")
+#levels(df1$SleepAndRespiratoryCareM) <- c(levels(df1$SleepAndRespiratoryCareM), "1")
 levels(df1$SurgeryM) <- c(levels(df1$SurgeryM), "1")
 
 
@@ -82,10 +83,10 @@ cmEmergencyMedicine <-confusionMatrix(df1$EmergencyMedicine, df1$EmergencyMedici
 #cmGastroenterology <-confusionMatrix(df1$Gastroenterology, df1$GastroenterologyM,  positive = "0", mode="everything") #solo un livello
 cmMentalHealthAndNeurology <-confusionMatrix(df1$MentalHealthAndNeurology, df1$MentalHealthAndNeurologyM,  positive = "1", mode="everything")
 cmNutrition <-confusionMatrix(df1$Nutrition, df1$NutritionM,  positive = "1", mode="everything")
-cmOncology <-confusionMatrix(df1$Oncology, df1$OncologyM,  positive = "1", mode="everything")
+#cmOncology <-confusionMatrix(df1$Oncology, df1$OncologyM,  positive = "1", mode="everything")
 cmPediatrics <-confusionMatrix(df1$Pediatrics, df1$PediatricsM,  positive = "1", mode="everything")
 cmSensorySystemsHealthcare <-confusionMatrix(df1$SensorySystemsHealthcare, df1$SensorySystemsHealthcareM,  positive = "1", mode="everything")
-cmSleepAndRespiratoryCare <-confusionMatrix(df1$SleepAndRespiratoryCare, df1$SleepAndRespiratoryCareM,  positive = "1", mode="everything")
+#cmSleepAndRespiratoryCare <-confusionMatrix(df1$SleepAndRespiratoryCare, df1$SleepAndRespiratoryCareM,  positive = "1", mode="everything")
 cmSurgery <-confusionMatrix(df1$Surgery, df1$SurgeryM,  positive = "1", mode="everything")
 cmGynecology <-confusionMatrix(df1$GynecologyandObstetrics, df1$GynecologyandObstetricsM,  positive = "1", mode="everything")
 
