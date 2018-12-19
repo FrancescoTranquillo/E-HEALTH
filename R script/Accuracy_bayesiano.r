@@ -55,7 +55,7 @@ descr_dtm <- DocumentTermMatrix(descr_corpus_clean)
 
 #separo in training e test indicando la percentuale con p, creando gli indici delle
 #righe indiate come train, e quelle indicate come test
-train_index <- createDataPartition(df_class$NC.1.0, p = 0.99, list = F)
+train_index <- createDataPartition(df_class$NC.1.0, p = 1, list = F)
 
 #separo in train e test usando gli indici trovati al passaggio precendente
 descr_raw_train <- df_class[train_index, ]
@@ -132,10 +132,10 @@ df_nostro_dtm <- DocumentTermMatrix(df_nostro_corpus_clean, list(dictionary=desc
 df_nostro_test <- df_nostro_dtm %>% apply(MARGIN=2, convert_counts)
 
 #predico  utilizzando il modello
-df_nostro_predict1 <- predict(NC_B, df_nostro_test)
+df_nostro_predict1 <- predict(descr_model1, df_nostro_test)
 
 #creo e richiamo la matrice di confusione
-df_nostro_cm1 <- confusionMatrix(df_nostro_predict1, df_nostro$NC.1.0,  positive="0", mode = "everything")
+df_nostro_cm1 <- confusionMatrix(df_nostro_predict1, df_nostro$NC.1.0,  positive="1", mode = "everything")
 df_nostro_cm1
 
 df_nostro$NC_predicted<-as.numeric(levels(df_nostro_predict1))[df_nostro_predict1]
