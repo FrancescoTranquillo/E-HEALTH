@@ -5,9 +5,9 @@ library(Hmisc)
 library(dplyr)
 
 
-df3<-read.csv2("./Results/Dermatology_top60.csv", header=T, stringsAsFactors=F)
+df3<-read.csv2("./Tabelle to be consegnate/Results/Dermatology_top60.csv", header=T, stringsAsFactors=F)
 
-df5<-read.csv2("./Results/db_totale.csv", header=T, stringsAsFactors=F)
+df5<-read.csv2("./Tabelle to be consegnate/Results/db_totale.csv", header=T, stringsAsFactors=F)
 df5$V1<-factor(df5$V1)
 
 ## Rename
@@ -81,9 +81,9 @@ ggplot(df3a ,aes(x=reorder(a, -n),n))+
   labs(y = "count", size=2,x = "Subcategory Function")
 
   
-df4<-read.csv2("./Results/Dermatology.csv", header=T, stringsAsFactors=F)
+df4<-read.csv2("./Tabelle to be consegnate/Results/Dermatology.csv", header=T, stringsAsFactors=F)
 
-df_price<-tibble("Top60"=df3$Price, "Dermatology"=df4$Price)
+
 
 library(reshape2)
 
@@ -95,14 +95,14 @@ df4<-df4[-(1:60),]
 df4$Top60<-"0"
 dfplot<-rbind(df3, df4)
 dfplot$Category<-factor(dfplot$Category)
-dfplot.m<-melt(dfplot, id.vars = c('Top60','Category'), measure.vars = c('Size'))
+dfplot.m<-melt(dfplot, id.vars = c('Top60','Category'), measure.vars = c('Ranking'))
 dfplot.m
 p<-ggplot(subset(dfplot.m,subset = dfplot.m$value<150))+
-  geom_boxplot(aes(x=Top60, y=value, fill=Category),alpha=0.6)+
+  geom_boxplot(aes(x=Top60, y=value, fill=Category),alpha=0.6, size=1)+
   theme_minimal(base_size = 16)+
-  labs(y = "Size [MB]", size=2,x = "Top Ranked")+
+  labs(y = "Rank", size=2,x = "Top Ranked")+
   scale_fill_manual(values=viridis(3))+
-  ggtitle("Comparison of Size in Dermatology specialty ")+
+  ggtitle("Comparison of rank in Dermatology specialty")
   
   
 p
