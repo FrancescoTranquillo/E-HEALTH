@@ -33,4 +33,4 @@ relevant methods available from the recent literature.
 For this part we used a combination of **text mining and machine learning**, developing a **[naive bayes classifier](https://towardsdatascience.com/introduction-to-naive-bayes-classification-4cffabb1ae54)** that was used to separate medical from not-medical apps. This separation allowed us to have a lighter database of apps that was successively analyzed using **[MetaMap](https://metamap.nlm.nih.gov/)**, a highly configurable program to map biomedical text to the UMLS Metathesaurus or, equivalently, to discover Metathesaurus concepts referred to in text.
 
 ## Full pdf report
-You can read more about this project in the full pdf report available [here](R script/Report/report_ehealth.pdf)
+You can read more about this project in the full pdf report available [here](Report/report_ehealth.pdf)
