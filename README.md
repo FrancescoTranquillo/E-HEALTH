@@ -4,8 +4,8 @@
 1. [Scope of the project](#Scope-of-the-project)
 1. [Brief introduction to methods](#Brief-introduction-to-methods)
 2. [Project outline](#Project-outline)
- 1. [Identification and data gathering](#Identification-and-data-gathering)
- 2. [Characterization and classification of health apps](#Characterization-and-classification-of-health-apps)
+  1. [Identification and data gathering](#Identification-and-data-gathering)
+  2. [Characterization and classification of health apps](#Characterization-and-classification-of-health-apps)
 
 ## Scope of the project
 Given the huge number of health-related Apps available online and given their increasing relevance for
